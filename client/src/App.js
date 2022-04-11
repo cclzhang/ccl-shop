@@ -15,10 +15,26 @@ import './App.css';
 
 function App() {
   const [cart, setCart] = useState([])
+  const [products, setProducts] = useState([])
 
-  const displayCart = (data) => {
-    // console.log("data: ", data)
-    setCart(data)
+  const index = pname => cart.findIndex(item => item.product_name == pname)
+
+  const increment = (pname, stock) => {
+    const i = index(pname)
+
+    if (i !== -1 && cart[i].quantity < stock) {
+      const newCart = [...cart];
+      newCart[i].quantity = cart[i].quantity + 1;
+      setCart(newCart);
+    } 
+    // else {
+    //   setCart([...cart, {
+    //     product_name: product_name,
+    //     image: image,
+    //     price: price,
+    //     quantity: 1,
+    //   }])
+    // }
   }
 
   return (
@@ -29,7 +45,13 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/garage/:productName" element={<Product />} />
-          <Route path="/garage" element={<Garage displayCart={displayCart}/>} />
+          <Route path="/garage" element={<Garage 
+            setCart={setCart} 
+            cart={cart} 
+            increment={increment}
+            products={products}
+            setProducts={setProducts}
+          />} />
           <Route path="/writings" element={<Writings />} />
           <Route path="/learn" element={<Learn />} />
           <Route path="/cart" element={<Cart />} />
@@ -37,8 +59,14 @@ function App() {
           <Route path="*" element={<PageNotFound/>} />
         </Routes>
 
-        <CartOverlay cart={cart}/>
-        {/* {cart ? <p>{cart}</p> : <p>"no"</p>} */}
+        <CartOverlay 
+          setCart={setCart} 
+          cart={cart} 
+          increment={increment}
+          products={products}
+          setProducts={setProducts} 
+        />
+        
         <Footer />
       </div>
     </Router>

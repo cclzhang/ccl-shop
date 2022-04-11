@@ -49,13 +49,10 @@ def garage_products():
     db = con.cursor()
     if request.method == "POST":
         global cart
-        productId = request.get_json()["item"]
+        frontCart = request.get_json()["cart"]
 
-        db.execute("SELECT * FROM items WHERE product_name=?", [productId])
-        item = db.fetchall()
-        # print(item)
-        cart.append(item[0])
-        print(cart)
+        cart = frontCart
+
         return jsonify(cart)
 
         return jsonify(cart)
