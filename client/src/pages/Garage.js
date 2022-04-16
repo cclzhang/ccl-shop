@@ -22,6 +22,7 @@ const Garage = ({ setCart, cart, products, setProducts }) => {
 
   return (
     <main>
+      <h3>Shop All In My Home</h3>
       <p>{ count ? `${count} items` : " " }</p>
       {
         products && products.map(({ id, product_name, image, stock, description, price }) => (

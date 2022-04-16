@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { increment, decrement, index, remove, calc, numToCurrency } from '../helpers'
 
-const CartOverlay = ({ setCart, cart, products }) => {
+const CartOverlay = ({ setCart, cart }) => {
 
   return (
     <div>

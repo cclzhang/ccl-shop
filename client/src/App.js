@@ -77,8 +77,6 @@ function App() {
         <CartOverlay 
           setCart={setCart} 
           cart={cart} 
-          products={products}
-          setProducts={setProducts} 
         />
         
         <Footer />

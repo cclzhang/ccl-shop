@@ -21,6 +21,7 @@ const Writings = ({cart, setCart, products, setProducts}) => {
 
   return (
     <main>
+      <h3>Shop All In My Head</h3>
       {count ? <p>{count} items</p>: <p></p>}
       {
         products && products.map(({ id, title, stock, summary, price }) => (
