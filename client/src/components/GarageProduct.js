@@ -1,46 +1,30 @@
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
-// import { increment } from '../functions'
+import React, { useEffect } from 'react'
+import { index, increment } from '../helpers'
 
-const GarageProduct = ({ product_name, image, stock, description, price, setCart, cart, increment }) => {
+const GarageProduct = ({ product_name, image, stock, description, price, setCart, cart }) => {
 
   const handleClick = () => {
     console.log("clicked")
   }
 
   const addToCart = (pname, stock) => {
-    const index = cart.findIndex(item => item.product_name == pname)
+    const i = index(cart, pname)
 
-    if (index === -1){
+    if (i === -1){
+      console.log("i: ",i)
       setCart([...cart, {
         product_name: product_name,
         image: image,
         price: price,
         quantity: 1,
       }])
-    } else {
-      increment(pname, stock)
+    } else if (cart[i].quantity < stock) {
+      setCart(increment(cart, pname, stock))
     }
-    
   }
 
-  useEffect(()=> {
 
-    axios
-      .post('http://127.0.0.1:5000/garage', {
-        cart: cart
-      })
-      .then(res => {
-        console.log("data: ", res.data)
-      })
-      .catch(err => {
-        console.log(err);
-      });
-
-    return () => {
-      console.log("garage product: return from data change")
-    }
-  }, [cart])
 
   return (
     <div className='garage-product'>

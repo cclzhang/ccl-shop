@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react'
-import { GarageProduct, CartOverlay } from '../components'
+import React, { useEffect } from 'react'
+import { GarageProduct } from '../components'
 import axios from 'axios'
 
-const Garage = ({ setCart, cart, increment, products, setProducts }) => {
-  // const [products, setProducts] = useState([])
+const Garage = ({ setCart, cart, products, setProducts }) => {
 
   useEffect(() => {
     axios
@@ -29,7 +28,6 @@ const Garage = ({ setCart, cart, increment, products, setProducts }) => {
             price={price}
             setCart={setCart}
             cart={cart}
-            increment={increment}
           />
         ))
       }

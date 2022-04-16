@@ -1,5 +1,5 @@
 // General Import
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import axios from 'axios';
 
@@ -17,25 +17,36 @@ function App() {
   const [cart, setCart] = useState([])
   const [products, setProducts] = useState([])
 
-  const index = pname => cart.findIndex(item => item.product_name == pname)
+  useEffect(()=> {
+    axios
+      .get('http://127.0.0.1:5000/cart')
+      .then(res => {
+        console.log("hh", res.data)
+        setCart(res.data)
+      })
+      .catch(err => console.log(err))
 
-  const increment = (pname, stock) => {
-    const i = index(pname)
+    return () => {
+      console.log("app product: return from data change")
+    }
+  }, [])
 
-    if (i !== -1 && cart[i].quantity < stock) {
-      const newCart = [...cart];
-      newCart[i].quantity = cart[i].quantity + 1;
-      setCart(newCart);
-    } 
-    // else {
-    //   setCart([...cart, {
-    //     product_name: product_name,
-    //     image: image,
-    //     price: price,
-    //     quantity: 1,
-    //   }])
-    // }
-  }
+  useEffect(() => {
+    axios
+      .post('http://127.0.0.1:5000/garage', {
+        cart: cart
+      })
+      .then(res => {
+        console.log("data: ", res.data)
+      })
+      .catch(err => {
+        console.log(err);
+      });
+
+    return () => {
+      console.log("garage product: return from data change")
+    }
+  }, [cart])
 
   return (
     <Router>
@@ -48,7 +59,6 @@ function App() {
           <Route path="/garage" element={<Garage 
             setCart={setCart} 
             cart={cart} 
-            increment={increment}
             products={products}
             setProducts={setProducts}
           />} />
@@ -62,7 +72,6 @@ function App() {
         <CartOverlay 
           setCart={setCart} 
           cart={cart} 
-          increment={increment}
           products={products}
           setProducts={setProducts} 
         />

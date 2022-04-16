@@ -1,54 +1,33 @@
-import axios from 'axios'
 import React, { useState, useEffect } from 'react'
+import axios from 'axios'
+import { increment, decrement, index, remove, calc, numToCurrency } from '../helpers'
 
-const CartOverlay = ({ setCart, cart, increment, products, setProducts }) => {
-  
-  const index = pname => cart.findIndex(item => item.product_name == pname)
-
-  const remove = pname => setCart(prev => prev.filter(item => item.product_name !== pname))
-
-  const decrement = pname => {
-    const i = index(pname)
-
-    if (cart[i].quantity === 1) {
-      remove(pname)
-      return
-    } 
-
-    const newCart = [...cart];
-    newCart[i].quantity = cart[i].quantity - 1;
-    setCart(newCart);
-  }
-
-  useEffect(() => { 
-    axios
-      .get('http://127.0.0.1:5000/garage')
-      .then(res => { setProducts(res.data) })
-      .catch(err => console.log("error: ", err))
-
-    return () => {
-      console.log("cart overlay: return from data change")
-    } 
-  }, [cart])
+const CartOverlay = ({ setCart, cart, products }) => {
 
   return (
     <div>
-      <h2>Cart Overlay</h2>
+      <h2>Cart Sidebar</h2>
       {
-        cart && cart.map(({ id, product_name, image, stock, price, quantity }, index) => (
-          <div key={index}>
+        cart && cart.map(({ product_name, image, price, quantity }, i) => (
+          <div key={i} className="cartItem">
             <img src={image} alt="" />
-            <p>id: {id}</p>
-            <p>product name: {product_name}</p>
-            <p>stock: {products[index].stock}</p>
-            <button onClick={() => decrement(product_name)}>-</button>
-            <p>{quantity}</p>
-            <button onClick={() => increment(product_name, products[index].stock)}>+</button>
-            <p>price: {price}</p>
-            <button onClick={() => remove(product_name)}>delete</button>
+            <div>
+              <p>product name: {product_name}</p>
+              <p>price: {price}</p>
+            </div>
+            <div>
+              <div>
+                <button onClick={() => setCart(decrement(cart, product_name))}>-</button>
+                <p>{quantity}</p>
+                <button onClick={() => setCart(increment(cart, product_name, products[index(products, product_name)].stock))}>+</button>
+              </div>
+              <button onClick={() => setCart(remove(product_name))}>delete</button>
+            </div>
           </div>
         ))
       }
+      <p>subtotal: <span>CAD {numToCurrency(calc(cart))}</span></p>
+      <button>checkout</button>
     </div>
   )
 }

@@ -4,11 +4,17 @@ const Footer = () => {
   return (
     <footer>
       <ul>
-        <li>facebook</li>
-        <li>instagram</li>
-        <li>twitter</li>
+        <li>
+          <a href="https://www.twitch.tv/xiciel">twitch</a>
+        </li>
+        <li>
+          <a href="https://www.twitter.com/xiciell">twitter</a>
+        </li>
+        <li>
+          <a href="https://www.instagram.com/xicielll/">insta</a>
+        </li>
       </ul>
-      <p>&copy; 2022 <a href="https://cecilezhang.com">Cecile Zhang</a></p>
+      <p>&copy; 2022 <a href="https://www.twitch.tv/xiciel">Xiciel</a></p>
     </footer>
   )
 }

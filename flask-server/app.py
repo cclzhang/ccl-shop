@@ -38,7 +38,7 @@ def index():
     
 @app.route("/garage", methods=['GET', 'POST'])
 def garage_products():
-    
+    global cart
     # Connect to database
     con = sqlite3.connect("inventory.db")
 
@@ -48,14 +48,12 @@ def garage_products():
     # Fetch data from database
     db = con.cursor()
     if request.method == "POST":
-        global cart
         frontCart = request.get_json()["cart"]
 
         cart = frontCart
 
         return jsonify(cart)
 
-        return jsonify(cart)
     # # Connect to database
     # con = sqlite3.connect("inventory.db")
 
@@ -70,6 +68,11 @@ def garage_products():
 
     return jsonify(items)
 
+@app.route("/cart", methods=['GET', 'POST'])
+def get_cart():
+    global cart
+    print("cart: ", cart)
+    return jsonify(cart)
 
 @app.route("/writings", methods=['GET'])
 def writings_products():
