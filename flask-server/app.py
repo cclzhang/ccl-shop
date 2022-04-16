@@ -54,19 +54,18 @@ def garage_products():
 
         return jsonify(cart)
 
-    # # Connect to database
-    # con = sqlite3.connect("inventory.db")
-
-    # # Convert rows from tuple to dict
-    # con.row_factory = dict_factory
-
-    # # Fetch data from database
-    # db = con.cursor()
     db.execute("SELECT * FROM items")
     items = db.fetchall()
-    print(cart)
 
-    return jsonify(items)
+    db.execute("SELECT COUNT(*) FROM items")
+    count = db.fetchall()
+
+    garage = {"items": items, "count": count[0]["COUNT(*)"]}
+
+    
+    # print(cart)
+
+    return jsonify(garage)
 
 @app.route("/cart", methods=['GET', 'POST'])
 def get_cart():
@@ -85,8 +84,11 @@ def writings_products():
     # Fetch data from database
     db = con.cursor()
     db.execute("SELECT * FROM writings")
-    writings = db.fetchall()
+    pieces = db.fetchall()
+    db.execute("SELECT COUNT(*) FROM writings")
+    count = db.fetchall()
 
+    writings = {"pieces": pieces, "count": count[0]["COUNT(*)"]}
     return jsonify(writings)
 
 @app.route("/learn", methods=['GET'])

@@ -1,14 +1,16 @@
+import axios from 'axios';
 import React, { useState, useEffect } from 'react'
 import { WritingsProduct } from '../components'
 
-const Writings = () => {
-  const [products, setProducts] = useState()
+const Writings = ({cart, setCart, products, setProducts}) => {
+  const [count, setCount] = useState(0)
 
   useEffect(() => {
-    fetch('http://127.0.0.1:5000/writings')
-      .then(res => res.json())
-      .then(data => {
-        setProducts(data)
+    axios
+      .get('http://127.0.0.1:5000/writings')
+      .then( res=> {
+        setProducts({ ...products, writings: res.data.pieces })
+        setCount(res.data.count)
       })
       .catch(error => console.log("error: ", error));
 
@@ -19,14 +21,17 @@ const Writings = () => {
 
   return (
     <main>
+      {count ? <p>{count} items</p>: <p></p>}
       {
         products && products.map(({ id, title, stock, summary, price }) => (
           <WritingsProduct
             key={id}
-            name={title}
+            product_name={title}
             stock={stock}
             summary={summary}
             price={price}
+            cart={cart}
+            setCart={setCart}
           />
         ))
       }

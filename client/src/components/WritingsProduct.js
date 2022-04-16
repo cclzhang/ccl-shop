@@ -1,15 +1,16 @@
 import React from 'react'
+import { addToCart } from '../helpers'
 
-const WritingsProduct = ({ name, stock, summary, price }) => {
+const WritingsProduct = ({ cart, setCart, product_name, stock, summary, price }) => {
   return (
     <div className='writings-product'>
       <button>
-        <h3>{name}</h3>
+        <h3>{product_name}</h3>
       </button>
       <p>stock: {stock}</p>
       <p>{summary}</p>
       <p>{price}</p>
-      <button>add to cart</button>
+      <button type="button" onClick={() => addToCart(cart, setCart, product_name, price, stock)}>add to cart</button>
     </div>
   )
 }

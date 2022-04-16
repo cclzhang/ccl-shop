@@ -10,8 +10,8 @@ const CartOverlay = ({ setCart, cart, products }) => {
       {
         cart && cart.map(({ product_name, image, price, quantity }, i) => (
           <div key={i} className="cartItem">
-            <img src={image} alt="" />
-            <div>
+            {image ? <img src={image} alt="" /> : null}
+            <div> 
               <p>product name: {product_name}</p>
               <p>price: {price}</p>
             </div>
@@ -19,7 +19,7 @@ const CartOverlay = ({ setCart, cart, products }) => {
               <div>
                 <button onClick={() => setCart(decrement(cart, product_name))}>-</button>
                 <p>{quantity}</p>
-                <button onClick={() => setCart(increment(cart, product_name, products[index(products, product_name)].stock))}>+</button>
+                <button onClick={() => setCart(increment(cart, product_name, cart[index(cart, product_name)].stock))}>+</button>
               </div>
               <button onClick={() => setCart(remove(product_name))}>delete</button>
             </div>

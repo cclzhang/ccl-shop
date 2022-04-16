@@ -15,7 +15,7 @@ import './App.css';
 
 function App() {
   const [cart, setCart] = useState([])
-  const [products, setProducts] = useState([])
+  const [products, setProducts] = useState({})
 
   useEffect(()=> {
     axios
@@ -59,11 +59,16 @@ function App() {
           <Route path="/garage" element={<Garage 
             setCart={setCart} 
             cart={cart} 
-            products={products}
+            products={products.items}
             setProducts={setProducts}
           />} />
-          <Route path="/writings" element={<Writings />} />
-          <Route path="/learn" element={<Learn />} />
+          <Route path="/writings" element={<Writings 
+            cart={cart}
+            setCart={setCart}
+            products={products.writings}
+            setProducts={setProducts}
+          />} />
+          {/* <Route path="/learn" element={<Learn />} /> */}
           <Route path="/cart" element={<Cart />} />
           <Route path="/account" element={<Account />} />
           <Route path="*" element={<PageNotFound/>} />
