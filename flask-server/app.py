@@ -23,8 +23,6 @@ app.config['MAX_CONTENT_LENGTH'] = 5120 * 5120
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['UPLOAD_EXTENSIONS'] = ['.jpg', '.png', '.gif', '.jpeg', '.svg', '.tiff']
 
-cart = []
-
 conn = sqlite3.connect('inventory.db')
 
 conn.close()
@@ -38,7 +36,6 @@ def index():
     
 @app.route("/garage", methods=['GET', 'POST'])
 def garage_products():
-    global cart
     # Connect to database
     con = sqlite3.connect("inventory.db")
 
@@ -47,12 +44,6 @@ def garage_products():
 
     # Fetch data from database
     db = con.cursor()
-    if request.method == "POST":
-        frontCart = request.get_json()["cart"]
-
-        cart = frontCart
-
-        return jsonify(cart)
 
     db.execute("SELECT * FROM items")
     items = db.fetchall()
@@ -62,16 +53,7 @@ def garage_products():
 
     garage = {"items": items, "count": count[0]["COUNT(*)"]}
 
-    
-    # print(cart)
-
     return jsonify(garage)
-
-@app.route("/cart", methods=['GET', 'POST'])
-def get_cart():
-    global cart
-    print("cart: ", cart)
-    return jsonify(cart)
 
 @app.route("/writings", methods=['GET'])
 def writings_products():
@@ -105,10 +87,6 @@ def learn_products():
     lessons = db.fetchall()
 
     return jsonify(lessons)
-
-@app.route("/cart", methods=['GET'])
-def userCart():
-    return "hello cart"
 
 @app.route("/testPage", methods=['GET', 'POST'])
 def file_upload():

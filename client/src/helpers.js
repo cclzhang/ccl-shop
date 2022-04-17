@@ -16,7 +16,6 @@ export const numToCurrency = price => {
 
 // Increment cart item by 1
 export const increment = (cart, product_name, stock, num = 1) => {
-  console.log(cart, product_name, stock)
   const i = index(cart, product_name)
   const newCart = [...cart]
 

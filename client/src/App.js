@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import axios from 'axios';
+import Cookies from 'universal-cookie';
 
 // Pages Import
 import { Home, Garage, Writings, Learn, Account, Cart, Product, PageNotFound} from './pages'
@@ -16,15 +17,10 @@ import './App.css';
 function App() {
   const [cart, setCart] = useState([])
   const [products, setProducts] = useState({})
+  const cookies = new Cookies()
 
   useEffect(()=> {
-    axios
-      .get('http://127.0.0.1:5000/cart')
-      .then(res => {
-        console.log("hh", res.data)
-        setCart(res.data)
-      })
-      .catch(err => console.log(err))
+    setCart(cookies.get("cart"))
 
     return () => {
       console.log("app product: return from data change")
@@ -32,16 +28,7 @@ function App() {
   }, [])
 
   useEffect(() => {
-    axios
-      .post('http://127.0.0.1:5000/garage', {
-        cart: cart
-      })
-      .then(res => {
-        console.log("data: ", res.data)
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    cookies.set("cart", cart, { path: '/' })
 
     return () => {
       console.log("garage product: return from data change")
@@ -77,6 +64,7 @@ function App() {
         <CartOverlay 
           setCart={setCart} 
           cart={cart} 
+          cookies={cookies}
         />
         
         <Footer />

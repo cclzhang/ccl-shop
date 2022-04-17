@@ -9,7 +9,6 @@ const Garage = ({ setCart, cart, products, setProducts }) => {
     axios
       .get('http://127.0.0.1:5000/garage')
       .then(res => { 
-        console.log("garage: ", res.data)
         setProducts({...products, items:res.data.items})
         setCount(res.data.count)
       })
