@@ -2,22 +2,21 @@ import React, { useEffect, useState } from 'react'
 import { GarageProduct } from '../components'
 import axios from 'axios'
 
-const Garage = ({ setCart, cart, products, setProducts }) => {
+const Garage = ({ setCart, cart, products, setProducts, setIsCartOpen }) => {
   const [count, setCount] = useState(0)
 
-  useEffect(() => {
-    axios
-      .get('http://127.0.0.1:5000/garage')
-      .then(res => { 
-        setProducts({...products, items:res.data.items})
-        setCount(res.data.count)
-      })
-      .catch(err => console.log("error: ", err))
+  // useEffect(() => {
+  //   axios
+  //     .get('http://127.0.0.1:5000/garage')
+  //     .then(res => { 
+  //       setProducts({...products, garage:res.data})
+  //     })
+  //     .catch(err => console.log("error: ", err))
       
-    return () => {
-      console.log("return from data change")
-    }
-  }, []);
+  //   return () => {
+  //     console.log("return from data change")
+  //   }
+  // }, []);
 
   return (
     <main>
@@ -34,6 +33,7 @@ const Garage = ({ setCart, cart, products, setProducts }) => {
             price={price}
             setCart={setCart}
             cart={cart}
+            setIsCartOpen={setIsCartOpen}
           />
         ))
       }

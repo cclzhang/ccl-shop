@@ -1,15 +1,25 @@
 import React from 'react'
-import Nav from './Nav'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { Nav } from '../components'
+import { userIcon, cartIcon } from '../assets'
 
-const Header = () => {
+const Header = ({ isCartOpen, setIsCartOpen, isAdmin, setIsAdmin }) => {
+  const navigate = useNavigate()
   return (
     <header>
       <h1><Link to="/">xiciel's shop</Link></h1>
       <Nav />
       <ul>
-        <li><button>profile</button></li>
-        <li><button>cart</button></li>
+        <li>
+          <button onClick={()=> isAdmin ? navigate('/owner') : null}>
+            <img src={userIcon} alt="account" />
+          </button>
+        </li>
+        <li>
+          <button onClick={() => setIsCartOpen(!isCartOpen)}>
+            <img src={cartIcon} alt="cart" />
+          </button>
+        </li>
       </ul>
     </header>
   )

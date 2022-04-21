@@ -17,6 +17,9 @@ li {
 
 a {
   color: rgb(255, 214, 210);
+  background: slategray;
+  width: 30px;
+  height: 10px;
 }
 
 .item-garage {
@@ -27,5 +30,16 @@ button {
   background: tomato;
   color: white;
   padding: 10px;
+}
+
+section {
+  border: 3px solid rgb(88, 106, 93);
+  margin: 10px 0px;
+  padding: 10px;
+}
+
+td, th {
+  padding: 10px;
+  border: 2px solid slategrey;
 }
 

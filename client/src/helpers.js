@@ -1,8 +1,5 @@
 // Find index of item
-export const index = (cart, product_name) => cart.findIndex(item => item.product_name == product_name)
-
-// Remove item in cart
-export const remove = product_name => prev => prev.filter(item => item.product_name !== product_name)
+export const index = (array, nameOfItem) => array.findIndex(item => item.nameOfItem == nameOfItem)
 
 // Change number to CAD
 export const numToCurrency = price => {
@@ -14,7 +11,10 @@ export const numToCurrency = price => {
   return dollarCAD.format(price)
 }
 
-// Increment cart item by 1
+
+/* CART RELATED FUNCTIONS */
+export const remove = product_name => prev => prev.filter(item => item.product_name !== product_name)
+
 export const increment = (cart, product_name, stock, num = 1) => {
   const i = index(cart, product_name)
   const newCart = [...cart]
@@ -26,7 +26,6 @@ export const increment = (cart, product_name, stock, num = 1) => {
   return newCart
 }
 
-// Decrement cart item by 1
 export const decrement = (cart, product_name, num = 1) => {
   const i = index(cart, product_name)
 
@@ -39,7 +38,7 @@ export const decrement = (cart, product_name, num = 1) => {
   return newCart
 }
 
-export const addToCart = (cart, setCart, product_name, price, stock, image = null) => {
+export const addToCart = (cart, setCart, setIsCartOpen, product_name, price, stock, image = null) => {
   const i = index(cart, product_name)
 
   if (i === -1 ) {
@@ -53,6 +52,8 @@ export const addToCart = (cart, setCart, product_name, price, stock, image = nul
   } else if (cart[i].quantity < stock) {
     setCart(increment(cart, product_name, stock))
   }
+
+  setIsCartOpen(true)
 }
 
 // Calculate Subtotal before Taxes
@@ -65,4 +66,13 @@ export const calc = (cart) => {
 
   return subtotal
 }
+/* ---------------------- */
 
+
+/* UPLOAD RELATED FUNCTIONS */
+export const uploadDetails = (uploadItem, setUploadItem, key, value) => {
+  // uploadItem[type][key] = value
+  setUploadItem({ ...uploadItem, [key]: value })
+}
+
+/* ------------------------ */

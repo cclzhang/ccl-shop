@@ -2,14 +2,14 @@ import axios from 'axios';
 import React, { useState, useEffect } from 'react'
 import { WritingsProduct } from '../components'
 
-const Writings = ({cart, setCart, products, setProducts}) => {
+const Writings = ({ cart, setCart, products, setProducts, setIsCartOpen}) => {
   const [count, setCount] = useState(0)
 
   useEffect(() => {
     axios
       .get('http://127.0.0.1:5000/writings')
       .then( res=> {
-        setProducts({ ...products, writings: res.data.pieces })
+        setProducts({ ...products, writings: res.data.writings })
         setCount(res.data.count)
       })
       .catch(error => console.log("error: ", error));
@@ -33,6 +33,7 @@ const Writings = ({cart, setCart, products, setProducts}) => {
             price={price}
             cart={cart}
             setCart={setCart}
+            setIsCartOpen={setIsCartOpen}
           />
         ))
       }
