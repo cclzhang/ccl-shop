@@ -1,6 +1,7 @@
 import CartOverlay from "./components/CartOverlay"
 import CartProduct from "./components/CartProduct"
 import DataTable from "./components/DataTable"
+import FormDialog from "./components/FormDialog"
 import Footer from "./components/Footer"
 import GarageProduct from "./components/GarageProduct"
 import GarageUpload from "./components/GarageUpload"
@@ -21,6 +22,7 @@ export {
   CartOverlay, 
   CartProduct, 
   DataTable,
+  FormDialog, 
   Footer, 
   GarageProduct, 
   GarageUpload,

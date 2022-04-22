@@ -1,11 +1,21 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { FormDialog } from '../components'
+
 
 const DataTable = ({ products, keys, title, prefix }) => {
+  const [open, setOpen] = useState(false)
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const addItem = (prefix) => {
+    console.log('add', title.toLowerCase())
+  }
 
   return (
     <section>
       <h3>{title} Inventory</h3>
-      <button>+ add new item</button>
+      <button onClick={handleClickOpen}>+ add new item</button>
       <table>
         <thead>
           <tr>
@@ -45,6 +55,7 @@ const DataTable = ({ products, keys, title, prefix }) => {
           }
         </tbody>
       </table>
+      <FormDialog open={open} setOpen={setOpen} title={title}/>
     </section>
   )
 }
