@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { FormDialog } from '../components'
 
 
-const DataTable = ({ products, keys, title, prefix }) => {
+const DataTable = ({ products, fields, title, prefix }) => {
   const [open, setOpen] = useState(false)
 
   const handleClickOpen = () => {
@@ -25,8 +25,8 @@ const DataTable = ({ products, keys, title, prefix }) => {
             </th>
             <th>id</th>
             {
-              keys.map((key, i)=>(
-                <th key={i}>{key}</th>
+              fields.map((field, i)=>(
+                <th key={i}>{field.key}</th>
               ))
             }
             <th>actions</th>
@@ -42,8 +42,8 @@ const DataTable = ({ products, keys, title, prefix }) => {
                 </td>
                 <th>{prefix}{product.id}</th>
                 {
-                  keys.map((key, i)=>(
-                    <td key={i}>{product[key]}</td>
+                  fields.map((field, i)=>(
+                    <td key={i}>{product[field.key]}</td>
                   ))
                 }
                 <td>
@@ -55,7 +55,7 @@ const DataTable = ({ products, keys, title, prefix }) => {
           }
         </tbody>
       </table>
-      <FormDialog open={open} setOpen={setOpen} title={title}/>
+      <FormDialog open={open} setOpen={setOpen} title={title} fields={fields}/>
     </section>
   )
 }

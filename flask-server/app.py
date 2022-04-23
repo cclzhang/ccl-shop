@@ -21,19 +21,39 @@ app.config['MAX_CONTENT_LENGTH'] = 5120 * 5120
 
 # Check that file extension matches the following
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config['UPLOAD_EXTENSIONS'] = ['.jpg', '.png', '.gif', '.jpeg', '.svg', '.tiff']
+app.config['UPLOAD_EXTENSIONS'] = [
+    '.jpg', '.png', '.gif', '.jpeg', '.svg', '.tiff']
 
 conn = sqlite3.connect('inventory.db')
 
 conn.close()
 
+
 @app.route("/", methods=['GET'])
 def index():
+    # Connect to database
+    con = sqlite3.connect("inventory.db")
 
-    return {
-        "name": ["apples", "oranges"]
-    }
-    
+    # Convert rows from tuple to dict
+    con.row_factory = dict_factory
+
+    # Fetch data from database
+    db = con.cursor()
+
+    db.execute("SELECT * FROM items")
+    garage = db.fetchall()
+
+    db.execute("SELECT * FROM writings")
+    writings = db.fetchall()
+
+    db.execute("SELECT * FROM lessons")
+    learn = db.fetchall()
+
+    products = {'garage': garage, 'writings': writings, 'learn': learn}
+
+    return jsonify(products)
+
+
 @app.route("/garage", methods=['GET', 'POST'])
 def garage_products():
     # Connect to database
@@ -46,14 +66,10 @@ def garage_products():
     db = con.cursor()
 
     db.execute("SELECT * FROM items")
-    items = db.fetchall()
+    garage_items = db.fetchall()
 
-    db.execute("SELECT COUNT(*) FROM items")
-    count = db.fetchall()
+    return jsonify(garage_items)
 
-    garage = {"items": items, "count": count[0]["COUNT(*)"]}
-
-    return jsonify(garage)
 
 @app.route("/writings", methods=['GET'])
 def writings_products():
@@ -70,8 +86,9 @@ def writings_products():
     db.execute("SELECT COUNT(*) FROM writings")
     count = db.fetchall()
 
-    writings = {"pieces": pieces, "count": count[0]["COUNT(*)"]}
+    writings = {"writings": pieces, "count": count[0]["COUNT(*)"]}
     return jsonify(writings)
+
 
 @app.route("/learn", methods=['GET'])
 def learn_products():
@@ -83,32 +100,35 @@ def learn_products():
 
     # Fetch data from database
     db = con.cursor()
-    db.execute("SELECT * FROM lessons")
-    lessons = db.fetchall()
+    db.execute("SELECT * FROM writings")
+    lesson = db.fetchall()
+    db.execute("SELECT COUNT(*) FROM writings")
+    count = db.fetchall()
 
-    return jsonify(lessons)
+    learn = {"learn": lesson, "count": count[0]["COUNT(*)"]}
+    return jsonify(learn)
 
-@app.route("/testPage", methods=['GET', 'POST'])
-def file_upload():
+
+@app.route("/owner/garage", methods=['GET', 'POST'])
+def garage_upload():
     if request.method == 'POST':
-        file = request.files['image']
+        upload = request.json['upload']
+        return jsonify(upload)
 
-        destination = "/".join([UPLOAD_FOLDER, secure_filename(file.filename)])
-        file.save(destination)
 
-        # session['uploadFilePath'] = destination
-        # response = {"imgName": file.filename, "imgPath": destination}
-        # response.headers.add('Access-Control-Allow-Origin', '*')
-        # file.headers.add('Access-Control-Allow-Origin', '*')
-        return redirect("http://localhost:3000/testPage")
-        
-    return send_file(destination, mimetype='image/jpg')
+@app.route("/owner/writings", methods=['GET', 'POST'])
+def writings_upload():
+    if request.method == 'POST':
+        upload = request.json['upload']
+        return jsonify(upload)
 
-@app.route("/test", methods=["POST"])
-def test_input():
-    name = request.json.get('name')
-    current_app.logger.debug(name)
-    return jsonify(name=name)
 
-if __name__=="__main__":
+@app.route("/owner/learn", methods=['GET', 'POST'])
+def learn_upload():
+    if request.method == 'POST':
+        upload = request.json['upload']
+        return jsonify(upload)
+
+
+if __name__ == "__main__":
     app.run(debug=True)

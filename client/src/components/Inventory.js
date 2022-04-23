@@ -7,33 +7,69 @@ const Inventory = ({products}) => {
       <DataTable
         products={products.garage}
         prefix='g'
-        keys={[
-          'product_name',
-          'image', 
-          'stock', 
-          'description', 
-          'price'
-        ]}
         title="Garage"
+        fields={[
+          { 
+            key: 'product_name', 
+            value: 'Product A'
+          },
+          {
+            key: 'image',
+            value: 'https://via.placeholder.com/150'
+          }, 
+          {
+            key: 'stock',
+            value: 0
+          }, 
+          {
+            key: 'description',
+            value : 'This is a description for Product A'
+          }, 
+          {
+            key: 'price',
+            value: 0.00
+          }
+        ]}
       />
       <DataTable
         products={products.writings}
         prefix='w'
-        keys={[
-          'title',
-          'stock', 
-          'summary', 
-          'price'
+        fields={[
+          { 
+            key: 'title', 
+            value: 'Story One'
+          },
+          {
+            key: 'stock',
+            value: 0
+          }, 
+          {
+            key: 'summary',
+            value : 'The summary of Story One'
+          }, 
+          {
+            key: 'price',
+            value: 0.00
+          }
         ]}
         title="Writings"
       />
       <DataTable
         products={products.learn}
         prefix='e'
-        keys={[
-          'lesson_name',
-          'duration_minutes', 
-          'price'
+        fields={[
+          { 
+            key: 'Lesson_name', 
+            value: 'Lesson C'
+          },
+          {
+            key: 'duration_minutes',
+            value: 0
+          }, 
+          {
+            key: 'price',
+            value: 0.00
+          }
         ]}
         title="Lessons"
       />
