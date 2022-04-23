@@ -58,26 +58,134 @@ def index():
 
 @app.route("/garage", methods=['GET', 'POST'])
 def garage_products():
-    if response.method == 'POST':
-        data = request.get_json('writings')
-        return jsonify(data)
-    return jsonify('hi')
+    if request.method == 'POST':
+        data = request.get_json()
+
+        try:
+            con = sqlite3.connect("inventory.db")
+            con.row_factory = dict_factory
+            db = con.cursor()
+
+            sqlite_insert = """
+                INSERT INTO items(product_name, image, stock, description, price)
+                VALUES(?, ?, ?, ?, ?)
+            """
+            data_tuple = (
+                data["product_name"],
+                data["image"],
+                int(data["stock"]),
+                data["description"],
+                data["price"]
+            )
+
+            # db.execute(sqlite_insert, data_tuple)
+            db.execute(sqlite_insert, data_tuple)
+            con.commit()
+            print("Python Variables inserted successfully into SqliteDb_developers table")
+
+            db.execute(
+                "SELECT * FROM items WHERE id=(SELECT MAX(id) FROM items)")
+            item = db.fetchall()
+            db.close()
+
+            return jsonify(item)
+
+        except Exception as e:
+            print(e)
+            con.rollback()
+            print("error in insert operation")
+        finally:
+            con.close()
+            print("The SQLite connection is closed")
+
+    return 'get request'
 
 
 @app.route("/writings", methods=['GET', 'POST'])
 def writings_products():
-    if response.method == 'POST':
-        data = request.json('writings')
-        return jsonify(data)
-    return jsonify('hi')
+    if request.method == 'POST':
+        data = request.get_json()
+
+        try:
+            con = sqlite3.connect("inventory.db")
+            con.row_factory = dict_factory
+            db = con.cursor()
+
+            sqlite_insert = """
+                INSERT INTO writings(title, stock, summary, price)
+                VALUES(?, ?, ?, ?)
+            """
+            data_tuple = (
+                data["title"],
+                int(data["stock"]),
+                data["summary"],
+                data["price"]
+            )
+
+            # db.execute(sqlite_insert, data_tuple)
+            db.execute(sqlite_insert, data_tuple)
+            con.commit()
+            print("Python Variables inserted successfully into SqliteDb_developers table")
+
+            db.execute(
+                "SELECT * FROM writings WHERE id=(SELECT MAX(id) FROM items)")
+            writing = db.fetchall()
+            db.close()
+
+            return jsonify(writing)
+
+        except Exception as e:
+            print(e)
+            con.rollback()
+            print("error in insert operation")
+        finally:
+            con.close()
+            print("The SQLite connection is closed")
+
+    return 'get request'
 
 
 @app.route("/learn", methods=['GET', 'POST'])
 def learn_products():
-    if response.method == 'POST':
-        data = request.json('writings')
-        return jsonify(data)
-    return jsonify('hi')
+    if request.method == 'POST':
+        data = request.get_json()
+
+        try:
+            con = sqlite3.connect("inventory.db")
+            con.row_factory = dict_factory
+            db = con.cursor()
+
+            sqlite_insert = """
+                INSERT INTO lessons(lesson_name, duration_minutes, price)
+                VALUES(?, ?, ?)
+            """
+            data_tuple = (
+                data["lesson_name"],
+                int(data["duration_minutes"]),
+                data["price"]
+            )
+
+            # db.execute(sqlite_insert, data_tuple)
+            db.execute(sqlite_insert, data_tuple)
+            con.commit()
+            print("Python Variables inserted successfully into SqliteDb_developers table")
+
+            db.execute(
+                "SELECT * FROM lessons WHERE id=(SELECT MAX(id) FROM items)")
+            lesson = db.fetchall()
+            db.close()
+
+            return jsonify(lesson)
+
+        except Exception as e:
+            print(e)
+            con.rollback()
+            print("error in insert operation")
+        finally:
+            con.close()
+            print("The SQLite connection is closed")
+
+    return 'get request'
 
 
 @app.route("/owner/inventory", methods=['GET'])

@@ -70,9 +70,6 @@ export const calc = (cart) => {
 
 
 /* UPLOAD RELATED FUNCTIONS */
-export const uploadDetails = (uploadItem, setUploadItem, key, value) => {
-  // uploadItem[type][key] = value
-  setUploadItem({ ...uploadItem, [key]: value })
-}
+
 
 /* ------------------------ */

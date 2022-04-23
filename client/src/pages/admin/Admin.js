@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { Link, Routes, Route } from 'react-router-dom'
-import { DataTable, Inventory, Upload } from '../components'
-import { PageNotFound, Home } from '../pages'
+import { PageNotFound, Home, Inventory } from '../../pages'
 
-const Admin = ({products}) => {
+const Admin = ({products, setProducts}) => {
   const [types, setTypes] = useState(['garage', 'writings', 'learn'])
+  console.log(products)
 
   return (
     <main>
@@ -14,7 +14,7 @@ const Admin = ({products}) => {
       
       <Routes>
         <Route index element={<Home />}/>
-        <Route path="inventory" element={<Inventory products={products}/>}/>
+        <Route path="inventory" element={<Inventory products={products} setProducts={setProducts}/>}/>
         <Route path="/*" element={<PageNotFound/>} />
       </Routes>
 

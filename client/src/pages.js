@@ -1,8 +1,9 @@
 import Account from "./pages/Account"
-import Admin from "./pages/Admin"
+import Admin from "./pages/admin/Admin"
 import Cart from "./pages/Cart"
 import Garage from "./pages/Garage"
 import Home from "./pages/Home"
+import Inventory from "./pages/admin/Inventory"
 import Learn from "./pages/Learn"
 import PageNotFound from "./pages/PageNotFound"
 import Product from "./pages/Product"
@@ -14,6 +15,7 @@ export {
   Cart, 
   Garage,
   Home,
+  Inventory,
   Learn, 
   PageNotFound, 
   Product, 

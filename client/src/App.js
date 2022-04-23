@@ -78,7 +78,7 @@ function App() {
         <Routes>
           <Route index element={<Home />} />
           <Route path="home" element={<Home />} />
-          { isAdmin ? <Route path="/owner/*" element={<Admin products={products} />}/> : null }
+          { isAdmin ? <Route path="/owner/*" element={<Admin products={products} setProducts={setProducts} />}/> : null }
           <Route path="/garage/:productName" element={<Product />} />
           <Route path="/garage" element={<Garage 
             setCart={setCart} 

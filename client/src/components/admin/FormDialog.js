@@ -1,22 +1,18 @@
-import React, { useEffect, useState } from 'react'
-import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material'
-import { FormControl, TextField, InputAdornment, OutlinedInput, InputLabel } from '@mui/material'
-import { Visibility, VisibilityOff } from '@mui/icons-material'
-import useMediaQuery from '@mui/material/useMediaQuery';
+import React, { useState } from 'react'
+import { 
+  Dialog, DialogTitle, DialogContent, DialogActions, 
+  TextField, 
+  useMediaQuery 
+} from '@mui/material'
 import { useTheme } from '@mui/material/styles';
 
-import { uploadDetails } from '../helpers';
-import PriceTextField from './PriceTextField';
+import { PriceTextField } from '../../components';
 import axios from 'axios';
 
-const FormDialog = ({open, setOpen, title, fields, prefix}) => {
+const FormDialog = ({open, setOpen, title, fields, prefix, products, setProducts}) => {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
   const [formValues, setFormValues] = useState({});
-
-  // const handleChange = key => e => {
-  //   setFormValues({ ...formValues, [key]: e.target.value });
-  // };
 
   const handleClose = () => {
     setOpen(false);
@@ -24,35 +20,27 @@ const FormDialog = ({open, setOpen, title, fields, prefix}) => {
 
   const handleSave = () => {
     let type = ''
-    // console.log(formValues)
-    switch (prefix) {
-      case 'g':
-        type = 'garage'
-        break
-      case 'w':
-        type = 'writings'
-        break
-      case 'e':
-        type = 'learn'
-        break
-      default:
-        return
+    if (prefix === 'g') {
+      type = 'garage'
+    } else if (prefix === 'w') {
+      type = 'writings'
+    } else if (prefix === 'e') {
+      type = 'learn'
+    } else {
+      console.log("prefix type doesn't match")
     }
+    
     console.log(type)
     axios
       .post(`http://127.0.0.1:5000/${type}`, formValues)
       .then(res => { 
-        console.log(type, res.data)
-        // setProducts(res.data)
+        setProducts({[type]: [...products, res.data[0]]})
       })
       .catch(err => console.log("error: ", err))
 
     handleClose()
   };
 
-  useEffect(()=>{
-    // setFormValues
-  }, [])
 
   return (
     <Dialog
@@ -76,7 +64,7 @@ const FormDialog = ({open, setOpen, title, fields, prefix}) => {
                   label="PRICE"
                   style={{marginTop: 10}}
                   placeholder={String(field.value.toFixed(2))}
-                  onChange={e => setFormValues({ ...formValues, [field.key]: e.target.value })}
+                  onChange={e => setFormValues({ ...formValues, [field.key]: parseFloat(e.target.value) })}
                 />
               case 'description':
               case 'summary':

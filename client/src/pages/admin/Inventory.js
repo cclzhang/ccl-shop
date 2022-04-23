@@ -1,11 +1,12 @@
 import React from 'react'
-import { DataTable } from '../components'
+import { DataTable } from '../../components'
 
-const Inventory = ({products}) => {
+const Inventory = ({products, setProducts}) => {
   return (
     <>
       <DataTable
         products={products.garage}
+        setProducts={setProducts}
         prefix='g'
         title="Garage"
         fields={[
@@ -33,6 +34,7 @@ const Inventory = ({products}) => {
       />
       <DataTable
         products={products.writings}
+        setProducts={setProducts}
         prefix='w'
         fields={[
           { 
@@ -56,10 +58,11 @@ const Inventory = ({products}) => {
       />
       <DataTable
         products={products.learn}
+        setProducts={setProducts}
         prefix='e'
         fields={[
           { 
-            key: 'Lesson_name', 
+            key: 'lesson_name', 
             value: 'Lesson C'
           },
           {
