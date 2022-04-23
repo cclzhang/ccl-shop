@@ -34,7 +34,11 @@ const FormDialog = ({open, setOpen, title, fields, prefix, products, setProducts
     axios
       .post(`http://127.0.0.1:5000/${type}`, formValues)
       .then(res => { 
-        setProducts({[type]: [...products, res.data[0]]})
+        if (products) {
+          setProducts({[type]: [...products, res.data[0]]})
+        } else {
+          setProducts({[type]: [res.data[0]]})
+        }
       })
       .catch(err => console.log("error: ", err))
 
