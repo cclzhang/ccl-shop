@@ -55,7 +55,7 @@ const DataTable = ({ products, fields, title, prefix }) => {
           }
         </tbody>
       </table>
-      <FormDialog open={open} setOpen={setOpen} title={title} fields={fields}/>
+      <FormDialog open={open} setOpen={setOpen} title={title} fields={fields} prefix={prefix}/>
     </section>
   )
 }

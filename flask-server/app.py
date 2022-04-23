@@ -1,4 +1,5 @@
 import os
+from urllib import response
 from flask import Flask, jsonify, request, redirect, url_for, current_app, session, send_file
 from flask_cors import CORS, cross_origin
 from werkzeug.utils import secure_filename
@@ -15,6 +16,7 @@ UPLOAD_FOLDER = '../client/src/assets'
 
 app = Flask(__name__)
 cors = CORS(app)
+
 
 # Control maximum size a request can be [1024 = 1mb]
 app.config['MAX_CONTENT_LENGTH'] = 5120 * 5120
@@ -56,78 +58,34 @@ def index():
 
 @app.route("/garage", methods=['GET', 'POST'])
 def garage_products():
-    # Connect to database
-    con = sqlite3.connect("inventory.db")
-
-    # Convert rows from tuple to dict
-    con.row_factory = dict_factory
-
-    # Fetch data from database
-    db = con.cursor()
-
-    db.execute("SELECT * FROM items")
-    garage_items = db.fetchall()
-
-    return jsonify(garage_items)
+    if response.method == 'POST':
+        data = request.get_json('writings')
+        return jsonify(data)
+    return jsonify('hi')
 
 
-@app.route("/writings", methods=['GET'])
+@app.route("/writings", methods=['GET', 'POST'])
 def writings_products():
-    # Connect to database
-    con = sqlite3.connect("inventory.db")
-
-    # Convert rows from tuple to dict
-    con.row_factory = dict_factory
-
-    # Fetch data from database
-    db = con.cursor()
-    db.execute("SELECT * FROM writings")
-    pieces = db.fetchall()
-    db.execute("SELECT COUNT(*) FROM writings")
-    count = db.fetchall()
-
-    writings = {"writings": pieces, "count": count[0]["COUNT(*)"]}
-    return jsonify(writings)
+    if response.method == 'POST':
+        data = request.json('writings')
+        return jsonify(data)
+    return jsonify('hi')
 
 
-@app.route("/learn", methods=['GET'])
+@app.route("/learn", methods=['GET', 'POST'])
 def learn_products():
-    # Connect to database
-    con = sqlite3.connect("inventory.db")
-
-    # Convert rows from tuple to dict
-    con.row_factory = dict_factory
-
-    # Fetch data from database
-    db = con.cursor()
-    db.execute("SELECT * FROM writings")
-    lesson = db.fetchall()
-    db.execute("SELECT COUNT(*) FROM writings")
-    count = db.fetchall()
-
-    learn = {"learn": lesson, "count": count[0]["COUNT(*)"]}
-    return jsonify(learn)
+    if response.method == 'POST':
+        data = request.json('writings')
+        return jsonify(data)
+    return jsonify('hi')
 
 
-@app.route("/owner/garage", methods=['GET', 'POST'])
+@app.route("/owner/inventory", methods=['GET'])
 def garage_upload():
-    if request.method == 'POST':
-        upload = request.json['upload']
-        return jsonify(upload)
-
-
-@app.route("/owner/writings", methods=['GET', 'POST'])
-def writings_upload():
-    if request.method == 'POST':
-        upload = request.json['upload']
-        return jsonify(upload)
-
-
-@app.route("/owner/learn", methods=['GET', 'POST'])
-def learn_upload():
-    if request.method == 'POST':
-        upload = request.json['upload']
-        return jsonify(upload)
+    # if response.method == 'POST':
+    #     data = request.json('writings')
+    #     return jsonify(data)
+    return jsonify('hi')
 
 
 if __name__ == "__main__":

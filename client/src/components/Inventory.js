@@ -22,12 +22,12 @@ const Inventory = ({products}) => {
             value: 0
           }, 
           {
-            key: 'description',
-            value : 'This is a description for Product A'
-          }, 
-          {
             key: 'price',
             value: 0.00
+          },
+          {
+            key: 'description',
+            value : 'This is a description for Product A'
           }
         ]}
       />
@@ -44,12 +44,12 @@ const Inventory = ({products}) => {
             value: 0
           }, 
           {
-            key: 'summary',
-            value : 'The summary of Story One'
-          }, 
-          {
             key: 'price',
             value: 0.00
+          },
+          {
+            key: 'summary',
+            value : 'The summary of Story One'
           }
         ]}
         title="Writings"
