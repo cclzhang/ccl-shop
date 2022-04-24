@@ -3,8 +3,6 @@ import { Link, Routes, Route } from 'react-router-dom'
 import { PageNotFound, Home, Inventory } from '../../pages'
 
 const Admin = ({products, setProducts}) => {
-  const [types, setTypes] = useState(['garage', 'writings', 'learn'])
-  console.log(products)
 
   return (
     <main>

@@ -42,13 +42,13 @@ def index():
     # Fetch data from database
     db = con.cursor()
 
-    db.execute("SELECT * FROM items")
+    db.execute("SELECT * FROM items ORDER BY id DESC")
     garage = db.fetchall()
 
-    db.execute("SELECT * FROM writings")
+    db.execute("SELECT * FROM writings ORDER BY id DESC")
     writings = db.fetchall()
 
-    db.execute("SELECT * FROM lessons")
+    db.execute("SELECT * FROM lessons ORDER BY id DESC")
     learn = db.fetchall()
 
     products = {'garage': garage, 'writings': writings, 'learn': learn}
@@ -66,29 +66,68 @@ def garage_products():
             con.row_factory = dict_factory
             db = con.cursor()
 
-            sqlite_insert = """
-                INSERT INTO items(product_name, image, stock, description, price)
-                VALUES(?, ?, ?, ?, ?)
-            """
-            data_tuple = (
-                data["product_name"],
-                data["image"],
-                int(data["stock"]),
-                data["description"],
-                data["price"]
-            )
+            if 'type' in data:
+                # return jsonify(data['id'])
+                db.execute("""
+                    DELETE FROM items
+                    WHERE id=?
+                """, (data['id'],))
+                con.commit()
+                print(
+                    "Python Variables inserted successfully into SqliteDb_developers table")
 
-            # db.execute(sqlite_insert, data_tuple)
-            db.execute(sqlite_insert, data_tuple)
-            con.commit()
-            print("Python Variables inserted successfully into SqliteDb_developers table")
+                db.execute("SELECT * FROM items ORDER BY id DESC")
+                item = db.fetchall()
+                db.close()
+                return jsonify(item)
 
-            db.execute(
-                "SELECT * FROM items WHERE id=(SELECT MAX(id) FROM items)")
-            item = db.fetchall()
-            db.close()
+            elif 'id' in data:
+                db.execute("""
+                    UPDATE items
+                    SET product_name = ?,
+                        image = ?,
+                        stock = ?,
+                        description = ?,
+                        price = ?
+                    WHERE
+                        id=?
+                """, (
+                    data["product_name"],
+                    data["image"],
+                    int(data["stock"]),
+                    data["description"],
+                    float(data["price"]),
+                    data['id']
+                ))
+                con.commit()
+                print(
+                    "Python Variables inserted successfully into SqliteDb_developers table")
 
-            return jsonify(item)
+                db.execute("SELECT * FROM items ORDER BY id DESC")
+                item = db.fetchall()
+                db.close()
+                return jsonify(item)
+
+            else:
+                db.execute("""
+                    INSERT INTO items(product_name, image, stock, description, price)
+                    VALUES(?, ?, ?, ?, ?)
+                """, (
+                    data["product_name"],
+                    data["image"],
+                    int(data["stock"]),
+                    data["description"],
+                    float(data["price"])
+                ))
+                con.commit()
+                print(
+                    "Python Variables inserted successfully into SqliteDb_developers table")
+
+                db.execute(
+                    "SELECT * FROM items WHERE id=(SELECT MAX(id) FROM items)")
+                item = db.fetchall()
+                db.close()
+                return jsonify(item)
 
         except Exception as e:
             print(e)
@@ -111,28 +150,66 @@ def writings_products():
             con.row_factory = dict_factory
             db = con.cursor()
 
-            sqlite_insert = """
-                INSERT INTO writings(title, stock, summary, price)
-                VALUES(?, ?, ?, ?)
-            """
-            data_tuple = (
-                data["title"],
-                int(data["stock"]),
-                data["summary"],
-                data["price"]
-            )
+            if 'type' in data:
+                db.execute("""
+                    DELETE FROM writings
+                    WHERE id=?
+                """, (data['id'],))
+                con.commit()
+                print(
+                    "Python Variables inserted successfully into SqliteDb_developers table")
 
-            # db.execute(sqlite_insert, data_tuple)
-            db.execute(sqlite_insert, data_tuple)
-            con.commit()
-            print("Python Variables inserted successfully into SqliteDb_developers table")
+                db.execute("SELECT * FROM writings ORDER BY id DESC")
+                writings = db.fetchall()
+                db.close()
+                return jsonify(writings)
 
-            db.execute(
-                "SELECT * FROM writings WHERE id=(SELECT MAX(id) FROM items)")
-            writing = db.fetchall()
-            db.close()
+            if 'id' in data:
+                db.execute("""
+                    UPDATE writings
+                    SET title = ?,
+                        stock = ?,
+                        summary = ?,
+                        price = ?
+                    WHERE
+                        id=?
+                """, (
+                    data["title"],
+                    int(data["stock"]),
+                    data["summary"],
+                    float(data["price"]),
+                    data['id']
+                ))
+                con.commit()
+                print(
+                    "Python Variables inserted successfully into SqliteDb_developers table")
 
-            return jsonify(writing)
+                db.execute("SELECT * FROM writings ORDER BY id DESC")
+                writing = db.fetchall()
+                db.close()
+                return jsonify(writing)
+
+            else:
+                # db.execute(sqlite_insert, data_tuple)
+                db.execute("""
+                    INSERT INTO writings(title, stock, summary, price)
+                    VALUES(?, ?, ?, ?)
+                """, (
+                    data["title"],
+                    int(data["stock"]),
+                    data["summary"],
+                    float(data["price"])
+                ))
+                con.commit()
+                print(
+                    "Python Variables inserted successfully into SqliteDb_developers table")
+
+                db.execute(
+                    "SELECT * FROM writings WHERE id=(SELECT MAX(id) FROM writings)")
+                writing = db.fetchall()
+
+                db.close()
+                return jsonify(writing)
 
         except Exception as e:
             print(e)
@@ -154,28 +231,57 @@ def learn_products():
             con = sqlite3.connect("inventory.db")
             con.row_factory = dict_factory
             db = con.cursor()
+            if 'type' in data:
+                db.execute("""
+                    DELETE FROM lessons
+                    WHERE id=?
+                """, (data['id'],))
+                con.commit()
+                print(
+                    "Python Variables inserted successfully into SqliteDb_developers table")
 
-            sqlite_insert = """
-                INSERT INTO lessons(lesson_name, duration_minutes, price)
-                VALUES(?, ?, ?)
-            """
-            data_tuple = (
-                data["lesson_name"],
-                int(data["duration_minutes"]),
-                data["price"]
-            )
+                db.execute("SELECT * FROM lessons ORDER BY id DESC")
+                lesson = db.fetchall()
+                db.close()
+                return jsonify(lesson)
+            if 'id' in data:
+                db.execute("""
+                    UPDATE lessons
+                    SET lesson_name = ?,
+                        duration_minutes = ?,
+                        price = ?
+                    WHERE
+                        id=?
+                """, (data["lesson_name"], int(data["duration_minutes"]), float(data["price"]), data['id']))
+                con.commit()
+                print(
+                    "Python Variables inserted successfully into SqliteDb_developers table")
 
-            # db.execute(sqlite_insert, data_tuple)
-            db.execute(sqlite_insert, data_tuple)
-            con.commit()
-            print("Python Variables inserted successfully into SqliteDb_developers table")
+                db.execute("SELECT * FROM lessons ORDER BY id DESC")
+                lesson = db.fetchall()
+                db.close()
+                return jsonify(lesson)
 
-            db.execute(
-                "SELECT * FROM lessons WHERE id=(SELECT MAX(id) FROM items)")
-            lesson = db.fetchall()
-            db.close()
+            else:
+                # return jsonify(data)
+                db.execute("""
+                    INSERT INTO lessons(lesson_name, duration_minutes, price)
+                    VALUES(?, ?, ?)
+                """, (
+                    data["lesson_name"],
+                    int(data["duration_minutes"]),
+                    float(data["price"])
+                ))
+                con.commit()
+                print(
+                    "Python Variables inserted successfully into SqliteDb_developers table")
 
-            return jsonify(lesson)
+                db.execute(
+                    "SELECT * FROM lessons WHERE id=(SELECT MAX(id) FROM lessons)")
+                lesson = db.fetchall()
+
+                db.close()
+                return jsonify(lesson)
 
         except Exception as e:
             print(e)
@@ -186,14 +292,6 @@ def learn_products():
             print("The SQLite connection is closed")
 
     return 'get request'
-
-
-@app.route("/owner/inventory", methods=['GET'])
-def garage_upload():
-    # if response.method == 'POST':
-    #     data = request.json('writings')
-    #     return jsonify(data)
-    return jsonify('hi')
 
 
 if __name__ == "__main__":

@@ -1,4 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
+import { ProductsContext } from '../../App';
+
 import { 
   Dialog, DialogTitle, DialogContent, DialogActions, 
   TextField, 
@@ -9,35 +11,27 @@ import { useTheme } from '@mui/material/styles';
 import { PriceTextField } from '../../components';
 import axios from 'axios';
 
-const FormDialog = ({open, setOpen, title, fields, prefix, products, setProducts}) => {
+const FormDialog = ({open, setOpen, title, fields, prefix, formValues, setFormValues, type, index}) => {
+  const [products, setProducts] = useContext(ProductsContext)
+
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
-  const [formValues, setFormValues] = useState({});
 
   const handleClose = () => {
     setOpen(false);
   };
 
-  const handleSave = () => {
-    let type = ''
-    if (prefix === 'g') {
-      type = 'garage'
-    } else if (prefix === 'w') {
-      type = 'writings'
-    } else if (prefix === 'e') {
-      type = 'learn'
-    } else {
-      console.log("prefix type doesn't match")
-    }
-    
-    console.log(type)
+  const handleSave = (e) => {
+    e.preventDefault()
     axios
       .post(`http://127.0.0.1:5000/${type}`, formValues)
       .then(res => { 
-        if (products) {
-          setProducts({[type]: [...products, res.data[0]]})
+        if (products[type] && !formValues.id) {
+          setProducts({...products, [type]: [res.data[0], ...products[type]]})
+        } else if (products[type] && formValues.id) {
+          setProducts({...products, [type]: res.data})
         } else {
-          setProducts({[type]: [res.data[0]]})
+          setProducts({...products, [type]: [res.data[0]]})
         }
       })
       .catch(err => console.log("error: ", err))
@@ -45,18 +39,17 @@ const FormDialog = ({open, setOpen, title, fields, prefix, products, setProducts
     handleClose()
   };
 
-
   return (
     <Dialog
       fullScreen={fullScreen}
       open={open}
       aria-labelledby="responsive-dialog-title"
     >
-      <DialogTitle id="responsive-dialog-title">
-        Add new {title} item
-      </DialogTitle>
-      <DialogContent>
-        <form action="">
+      <form action="" onSubmit={handleSave}>
+        <DialogTitle id="responsive-dialog-title">
+          Add new {title} item
+        </DialogTitle>
+        <DialogContent>
           {fields.map((field, i)=>(()=>{
             switch (field.key) {
               case 'price':
@@ -67,8 +60,9 @@ const FormDialog = ({open, setOpen, title, fields, prefix, products, setProducts
                   id="outlined-required"
                   label="PRICE"
                   style={{marginTop: 10}}
+                  value={formValues[field.key] ? formValues[field.key] : ''}
                   placeholder={String(field.value.toFixed(2))}
-                  onChange={e => setFormValues({ ...formValues, [field.key]: parseFloat(e.target.value) })}
+                  onChange={e => setFormValues({ ...formValues, [field.key]: e.target.value })}
                 />
               case 'description':
               case 'summary':
@@ -83,6 +77,7 @@ const FormDialog = ({open, setOpen, title, fields, prefix, products, setProducts
                   label={field.key.toUpperCase()}
                   style={{marginTop: 10}}
                   placeholder={String(field.value)}
+                  value={formValues[field.key] ? formValues[field.key] : ''}
                   onChange={e => setFormValues({ ...formValues, [field.key]: e.target.value })}
                   // helperText="error"
                 /> 
@@ -95,22 +90,19 @@ const FormDialog = ({open, setOpen, title, fields, prefix, products, setProducts
                   id="outlined-required"
                   label={field.key.replace(/_/g, " ").toUpperCase()}
                   style={{marginTop: 10}}
+                  value={formValues[field.key] ? formValues[field.key] : ''}
                   placeholder={String(field.value)}
                   onChange={e => setFormValues({ ...formValues, [field.key]: e.target.value })}
                   // helperText="error"
                 /> 
             }
           })())}
-        </form>
-      </DialogContent>
-      <DialogActions>
-        <button onClick={handleClose}>
-          cancel
-        </button>
-        <button onClick={handleSave} autoFocus>
-          save
-        </button>
-      </DialogActions>
+        </DialogContent>
+        <DialogActions>
+          <button onClick={handleClose}>cancel</button>
+          <button type="submit" autoFocus>save</button>
+        </DialogActions>
+      </form>
     </Dialog>
   )
 }

@@ -1,15 +1,35 @@
-import React, { useState } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
+import axios from 'axios'
 import { FormDialog } from '../../components'
+import { ProductsContext } from '../../App';
 
-
-const DataTable = ({ products, setProducts, fields, title, prefix }) => {
+const DataTable = ({ fields, title, prefix }) => {
+  const [products, setProducts] = useContext(ProductsContext)
+  const type = {g:'garage', w:'writings', e:'learn'}
+  const productList = products[type[prefix]]
   const [open, setOpen] = useState(false)
+  const [formValues, setFormValues] = useState({})
+  const [index, setIndex] = useState(0)
 
   const handleClickOpen = () => {
     setOpen(true);
+    setFormValues({})
   };
-  const addItem = (prefix) => {
-    console.log('add', title.toLowerCase())
+  const handleEdit = (id) => (e) => {
+    setFormValues(products[type[prefix]][products[type[prefix]].findIndex(x => x.id === id)])
+    setOpen(true)
+  }
+
+  const handleDelete = (id) => (e) => {
+    axios
+      .post(`http://127.0.0.1:5000/${type[prefix]}`,{
+        type: type[prefix],  
+        id: id 
+      })
+      .then(res => {
+        setProducts({...products, [type]: res.data})
+      })
+      .catch(err => console.log('error:', err))
   }
 
   return (
@@ -34,23 +54,25 @@ const DataTable = ({ products, setProducts, fields, title, prefix }) => {
         </thead>
         <tbody>
           {
-            products && products.map((product, i)=>(
+            products[type[prefix]] && products[type[prefix]].map((product, i)=>(
               <tr key={i}>
                 <td>
                   <input type="checkbox" name="" id="" />
                   <label htmlFor="">select</label>
                 </td>
-                <th>{prefix}{product.id}</th>
+                <th>
+                  {prefix}{products[type[prefix]].length - i}
+                </th>
                 {
                   fields.map((field, i)=>(
                     field.key === 'price' 
-                      ?<td key={i}>${product[field.key].toFixed(2)}</td>
+                      ?<td key={i}>${parseFloat(product[field.key]).toFixed(2)}</td>
                       : <td key={i}>{product[field.key]}</td>
                   ))
                 }
                 <td>
-                  <button>edit</button>
-                  <button>delete</button>
+                  <button onClick={handleEdit(product.id)}>edit</button>
+                  <button onClick={handleDelete(product.id)}>delete</button>
                 </td>
               </tr>
             ))
@@ -63,8 +85,10 @@ const DataTable = ({ products, setProducts, fields, title, prefix }) => {
         title={title} 
         fields={fields} 
         prefix={prefix}
-        products={products}
-        setProducts={setProducts}
+        formValues={formValues}
+        setFormValues={setFormValues}
+        type={type[prefix]}
+        index={index}
       />
     </section>
   )
