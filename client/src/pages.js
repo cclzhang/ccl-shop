@@ -1,5 +1,6 @@
 import Account from "./pages/Account"
 import Admin from "./pages/admin/Admin"
+import AdminHome from "./pages/admin/AdminHome"
 import Cart from "./pages/Cart"
 import Garage from "./pages/Garage"
 import Home from "./pages/Home"
@@ -12,6 +13,7 @@ import Writings from "./pages/Writings"
 export {
   Account,
   Admin,
+  AdminHome,
   Cart, 
   Garage,
   Home,

@@ -11,7 +11,7 @@ import { useTheme } from '@mui/material/styles';
 import { PriceTextField } from '../../components';
 import axios from 'axios';
 
-const FormDialog = ({open, setOpen, title, fields, prefix, formValues, setFormValues, type, index}) => {
+const FormDialog = ({open, setOpen, fields, formValues, setFormValues, type}) => {
   const [products, setProducts] = useContext(ProductsContext)
 
   const theme = useTheme();
@@ -47,7 +47,7 @@ const FormDialog = ({open, setOpen, title, fields, prefix, formValues, setFormVa
     >
       <form action="" onSubmit={handleSave}>
         <DialogTitle id="responsive-dialog-title">
-          Add new {title} item
+          Add new {type} item
         </DialogTitle>
         <DialogContent>
           {fields.map((field, i)=>(()=>{

@@ -10,7 +10,12 @@ const CartOverlay = ({ setCart, cart }) => {
       {
         cart && cart.map(({ product_name, image, price, quantity }, i) => (
           <div key={i} className="cartItem">
-            {image ? <img src={image} alt="" /> : null}
+            {image 
+            ? <div>
+                <img src='https://via.placeholder.com/150' alt="" /> 
+                <img src={image} alt="" /> 
+              </div>
+            : null}
             <div> 
               <p>product name: {product_name}</p>
               <p>price: {price}</p>

@@ -3,7 +3,7 @@ import axios from 'axios'
 import { FormDialog } from '../../components'
 import { ProductsContext } from '../../App';
 
-const DataTable = ({ fields, title, prefix }) => {
+const DataTable = ({ fields, prefix }) => {
   const [products, setProducts] = useContext(ProductsContext)
   const type = {g:'garage', w:'writings', e:'learn'}
   const productList = products[type[prefix]]
@@ -34,7 +34,6 @@ const DataTable = ({ fields, title, prefix }) => {
 
   return (
     <section>
-      <h3>{title} Inventory</h3>
       <button onClick={handleClickOpen}>+ add new item</button>
       <table>
         <thead>
@@ -82,13 +81,10 @@ const DataTable = ({ fields, title, prefix }) => {
       <FormDialog 
         open={open} 
         setOpen={setOpen} 
-        title={title} 
         fields={fields} 
-        prefix={prefix}
         formValues={formValues}
         setFormValues={setFormValues}
         type={type[prefix]}
-        index={index}
       />
     </section>
   )
