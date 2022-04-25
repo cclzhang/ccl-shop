@@ -5,14 +5,20 @@ import { userIcon, cartIcon } from '../assets'
 
 const Header = ({ isCartOpen, setIsCartOpen, isAdmin, setIsAdmin }) => {
   const navigate = useNavigate()
+
   return (
     <header>
       <h1><Link to="/">xiciel's shop</Link></h1>
       <Nav />
       <ul>
         <li>
-          <button onClick={()=> isAdmin ? navigate('/owner') : null}>
+          <button onClick={()=> setIsAdmin(!isAdmin)}>
+            toggle admin
+          </button>
+          <button onClick={()=> navigate('/owner')}>
+          {/* <Link to="/account"> */}
             <img src={userIcon} alt="account" />
+          {/* </Link> */}
           </button>
         </li>
         <li>

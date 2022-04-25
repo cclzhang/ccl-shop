@@ -1,47 +1,42 @@
 import React, { useState, useContext, useEffect } from 'react'
 import axios from 'axios'
-import { FormDialog } from '../../components'
+import { FormDialog, DeleteWarn } from '../../components'
 import { ProductsContext } from '../../App';
 
 const DataTable = ({ fields, prefix }) => {
   const [products, setProducts] = useContext(ProductsContext)
   const type = {g:'garage', w:'writings', e:'learn'}
-  const productList = products[type[prefix]]
-  const [open, setOpen] = useState(false)
+  const [openForm, setOpenForm] = useState(false)
+  const [openWarning, setOpenWarning] = useState(false)
   const [formValues, setFormValues] = useState({})
-  const [index, setIndex] = useState(0)
+  const [currentId, setCurrentId] = useState(null)
 
-  const handleClickOpen = () => {
-    setOpen(true);
+  const handleOpenForm = () => {
+    setOpenForm(true);
     setFormValues({})
   };
   const handleEdit = (id) => (e) => {
     setFormValues(products[type[prefix]][products[type[prefix]].findIndex(x => x.id === id)])
-    setOpen(true)
+    setOpenForm(true)
   }
 
-  const handleDelete = (id) => (e) => {
-    axios
-      .post(`http://127.0.0.1:5000/${type[prefix]}`,{
-        type: type[prefix],  
-        id: id 
-      })
-      .then(res => {
-        setProducts({...products, [type]: res.data})
-      })
-      .catch(err => console.log('error:', err))
+  const handleOpenWarning = id => e => {
+    setOpenWarning(true)
+    setCurrentId(id)
   }
+
+
 
   return (
     <section>
-      <button onClick={handleClickOpen}>+ add new item</button>
+      <button onClick={handleOpenForm}>+ add new item</button>
       <table>
         <thead>
           <tr>
-            <th>
+            {/* <th>
               <input type="checkbox" name="" id="" />
               <label htmlFor="">select</label>
-            </th>
+            </th> */}
             <th>id</th>
             {
               fields.map((field, i)=>(
@@ -55,10 +50,10 @@ const DataTable = ({ fields, prefix }) => {
           {
             products[type[prefix]] && products[type[prefix]].map((product, i)=>(
               <tr key={i}>
-                <td>
+                {/* <td>
                   <input type="checkbox" name="" id="" />
                   <label htmlFor="">select</label>
-                </td>
+                </td> */}
                 <th>
                   {prefix}{products[type[prefix]].length - i}
                 </th>
@@ -71,7 +66,7 @@ const DataTable = ({ fields, prefix }) => {
                 }
                 <td>
                   <button onClick={handleEdit(product.id)}>edit</button>
-                  <button onClick={handleDelete(product.id)}>delete</button>
+                  <button onClick={handleOpenWarning(product.id)}>delete</button>
                 </td>
               </tr>
             ))
@@ -79,12 +74,18 @@ const DataTable = ({ fields, prefix }) => {
         </tbody>
       </table>
       <FormDialog 
-        open={open} 
-        setOpen={setOpen} 
+        open={openForm} 
+        setOpen={setOpenForm} 
         fields={fields} 
         formValues={formValues}
         setFormValues={setFormValues}
         type={type[prefix]}
+      />
+      <DeleteWarn
+        open={openWarning} 
+        setOpen={setOpenWarning} 
+        type={type[prefix]}
+        id={currentId}
       />
     </section>
   )

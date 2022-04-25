@@ -13,10 +13,14 @@ export const numToCurrency = price => {
 
 
 /* CART RELATED FUNCTIONS */
-export const remove = product_name => prev => prev.filter(item => item.product_name !== product_name)
+export const remove = product_name => prev => {
+  console.log(product_name)
+  prev.filter(item => item.product_name !== product_name)
+}
 
 export const increment = (cart, product_name, stock, num = 1) => {
   const i = index(cart, product_name)
+  console.log(stock, i)
   const newCart = [...cart]
 
   if (i !== -1 && cart[i].quantity < stock) {
@@ -28,6 +32,7 @@ export const increment = (cart, product_name, stock, num = 1) => {
 
 export const decrement = (cart, product_name, num = 1) => {
   const i = index(cart, product_name)
+  console.log(i)
 
   if (cart[i].quantity === 1) {
     return remove(product_name)
@@ -40,6 +45,8 @@ export const decrement = (cart, product_name, num = 1) => {
 
 export const addToCart = (cart, setCart, setIsCartOpen, product_name, price, stock, image = null) => {
   const i = index(cart, product_name)
+  // const i = cart.findIndex((item)=>{item.product_name==product_name})
+  console.log(stock, i)
 
   if (i === -1 ) {
     setCart([...cart, {

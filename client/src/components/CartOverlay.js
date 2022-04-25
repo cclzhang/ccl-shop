@@ -4,6 +4,11 @@ import { increment, decrement, index, remove, calc, numToCurrency } from '../hel
 
 const CartOverlay = ({ setCart, cart }) => {
 
+  useEffect(()=>{
+    console.log(cart)
+
+  }, [])
+
   return (
     <div>
       <h2>Cart Sidebar</h2>
@@ -24,7 +29,7 @@ const CartOverlay = ({ setCart, cart }) => {
               <div>
                 <button onClick={() => setCart(decrement(cart, product_name))}>-</button>
                 <p>{quantity}</p>
-                <button onClick={() => setCart(increment(cart, product_name, cart[index(cart, product_name)].stock))}>+</button>
+                <button onClick={()=> setCart(increment(cart, product_name, cart[index(cart, product_name)]))}>+</button>
               </div>
               <button onClick={() => setCart(remove(product_name))}>delete</button>
             </div>
