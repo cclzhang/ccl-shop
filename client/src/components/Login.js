@@ -1,42 +1,65 @@
-import React from 'react'
-import { InputLabel, OutlinedInput, InputAdornment, IconButton } from '@mui/material'
+import React, { useState } from 'react'
+import { TextField, InputAdornment, IconButton } from '@mui/material'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
+import axios from 'axios'
 
-const Login = () => {
+const Login = ({setIsAdmin}) => {
 
-    const [values, setValues] = React.useState({
-    amount: '',
-    password: '',
-    weight: '',
-    weightRange: '',
-    showPassword: false,
-  });
+  const [showPassword, setShowPassword] = useState(false)
+  const [password, setPassword] = useState("")
+  const [username, setUsername] = useState("")
+  const [valid, setValid] = useState(null)
 
-  const handleChange = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    axios
+      .post("http://127.0.0.1:5000/owner", {
+        username: username,
+        password: password
+      })
+      .then(res => {
+        
+        console.log(res.data)
+        if (res.data === 0) {
+          setIsAdmin(true)
+        }
+        setValid(res.data)
+      })
+      .catch(err => console.log("error: ", err))
+  }
 
   const handleClickShowPassword = () => {
-    setValues({
-      ...values,
-      showPassword: !values.showPassword,
-    });
-  };
+    setShowPassword(!showPassword)
+  }
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
   return (
-    <form action="">
-      <input type="text" name="" id="" />
-
-                <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-          <OutlinedInput
-            id="outlined-adornment-password"
-            type={values.showPassword ? 'text' : 'password'}
-            value={values.password}
-            onChange={handleChange('password')}
-            endAdornment={
+    <div>
+      <form action="" onSubmit={handleSubmit}>
+        <TextField
+          required
+          error={valid === 1}
+          helperText={valid === 1 ? "username doesn't exist" : ""}
+          id="outlined-required"
+          label="Username"
+          value={username}
+          placeholder="Username"
+          onChange={(e)=> setUsername(e.target.value)}
+        /> 
+        <TextField
+          required
+          error={valid === 2}
+          helperText={valid === 2 ? "password doesn't match username" : ""}
+          id="outlined-adornment-password"
+          label="Password"
+          type={showPassword ? 'text' : 'password'}
+          placeholder="Password"
+          value={password}
+          onChange={(e)=> setPassword(e.target.value)}
+          InputProps={{
+            endAdornment: (
               <InputAdornment position="end">
                 <IconButton
                   aria-label="toggle password visibility"
@@ -44,13 +67,16 @@ const Login = () => {
                   onMouseDown={handleMouseDownPassword}
                   edge="end"
                 >
-                  {values.showPassword ? <VisibilityOff /> : <Visibility />}
+                  {showPassword ? <Visibility /> : <VisibilityOff />} 
                 </IconButton>
               </InputAdornment>
-            }
-            label="Password"
-          />
-    </form>
+            )
+          }}
+        />
+        <button type="submit">Login</button>
+      </form>
+      <a href="/">Forgot password?</a>
+    </div>
   )
 }
 

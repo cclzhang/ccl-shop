@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { TablePagination } from '@mui/material';
 
 const Pagination = ({length, rowsPerPage, setRowsPerPage}) => {

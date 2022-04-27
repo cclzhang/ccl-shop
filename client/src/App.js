@@ -1,35 +1,38 @@
 // General Import
-import React, { useEffect, useState, createContext } from 'react';
-import { BrowserRouter as Router, Route, Routes, Redirect, Navigate } from 'react-router-dom';
+import React, { useEffect, useState, createContext, useMemo } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import axios from 'axios';
 import { Drawer } from '@mui/material';
 import Cookies from 'universal-cookie';
 
 // Pages Import
-import { Home, Admin, Garage, Writings, Learn, Account, Cart, Product, PageNotFound} from './pages'
+import { Home, Admin, Account, Garage, Writings, Learn, Cart, Product, PageNotFound } from './pages'
 
 // Components Import
-import { Header, Footer, CartOverlay, Inventory } from './components';
+import { Header, Footer, CartOverlay } from './components';
 
 // CSS
 import './App.css';
 
 export const ProductsContext = createContext();
+export const CartContext = createContext();
+export const OpenCartContext = createContext();
 
 function App() {
-  const [isAdmin, setIsAdmin] = useState(true)
-  const [cart, setCart] = useState([])
+  const [isAdmin, setIsAdmin] = useState(false)
+  const [cart, setCart] = useState(undefined)
   const [products, setProducts] = useState({})
   const [isCartOpen, setIsCartOpen] = useState(false)
-  const cookies = new Cookies()
-  const iOS = typeof navigator !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent)
   
+  const cookies = useMemo(()=>new Cookies(), [])
 
-
-  
   // On page load set cart to whatever's in the cookie
   useEffect(()=> {
-    setCart(cookies.get("cart"))
+    if(cookies.get("cart")) {  
+      setCart(cookies.get("cart"))
+    } else {
+      setCart([]);
+    }
 
     axios
       .get('http://127.0.0.1:5000/')
@@ -45,6 +48,9 @@ function App() {
 
   // Every time cart changes update cookies
   useEffect(() => {
+    if (!cart) {
+      return
+    }
     cookies.set("cart", cart, { path: '/' })
 
     return () => {
@@ -56,7 +62,8 @@ function App() {
     <Router>
       <div className="App">
         <ProductsContext.Provider value={[products, setProducts]}>
-
+        <CartContext.Provider value={[cart, setCart]}>
+        <OpenCartContext.Provider value={[isCartOpen, setIsCartOpen]}>
           <Header 
             isCartOpen={isCartOpen} 
             setIsCartOpen={setIsCartOpen}
@@ -83,6 +90,7 @@ function App() {
           <Routes>
             <Route index element={<Home />} />
             <Route path="home" element={<Home />} />
+            <Route path="/account" element={<Account />} />
             <Route path="/owner/*" element={<Admin 
               products={products} 
               setProducts={setProducts} 
@@ -91,33 +99,23 @@ function App() {
             />}/>
             <Route path="/garage/:productName" element={<Product />} />
             <Route path="/garage" element={<Garage 
-              setCart={setCart} 
-              cart={cart} 
               products={products.garage}
-              setProducts={setProducts}
-              setIsCartOpen={setIsCartOpen}
             />} />
+            <Route path="/writings/:productName" element={<Product />} />
             <Route path="/writings" element={<Writings 
-              cart={cart}
-              setCart={setCart}
               products={products.writings}
-              setProducts={setProducts}
-              setIsCartOpen={setIsCartOpen}
             />} />
+            <Route path="/learn/:productName" element={<Product />} />
             <Route path="/learn" element={<Learn 
-              cart={cart}
-              setCart={setCart}
               products={products.learn}
-              setProducts={setProducts}
-              setIsCartOpen={setIsCartOpen}
             />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/account" element={<Account />} />
             <Route path="*" element={<PageNotFound/>} />
           </Routes>
         
-
-
+        </OpenCartContext.Provider>
+        </CartContext.Provider>
         </ProductsContext.Provider>
         <Footer />
       </div>

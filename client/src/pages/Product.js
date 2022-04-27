@@ -1,24 +1,50 @@
-import React, { useState, useEffect } from 'react'
-import { GarageProduct } from '../components'
-import { BrowserRouter as Router, Route, Routes, useParams } from 'react-router-dom';
+import React from 'react'
+import { useLocation } from 'react-router-dom';
+import { useContext } from 'react';
+import { CartContext, OpenCartContext } from '../App';
+import { addToCart } from '../helpers';
+
 
 const Product = () => {
-  const { productName } = useParams();
-  // const [garageProducts, setGarageProducts] = useState({})
+  const location = useLocation()
+  const product = location.state
 
-  return (
-    <div>
-      <p>url = {productName}</p>
-      {/* <GarageProduct 
-        id={productId} 
-        name={productName} 
-        image={productImg} 
-        stock={productStock} 
-        description={productDescription} 
-        price={productPrice}
-      /> */}
-    </div>
-  )
+  const [cart, setCart] = useContext(CartContext)
+  const [isCartOpen, setIsCartOpen] = useContext(OpenCartContext)
+
+  console.log(product)
+
+  const switchRender = (key, i) => {
+    switch(key) {
+      case 'image':
+        return <div key={i}>
+          <img 
+            src={product[key]} 
+            onError={({ currentTarget }) => {
+              currentTarget.onerror = null; // prevents looping
+              currentTarget.src = "https://via.placeholder.com/150";
+            }}
+            alt="" 
+          />
+        </div>
+      case 'duration':
+        return <p key={i}>{key.toUpperCase().replace(/_/g, ' ')}: {product[key]} mins</p>
+      case 'id':
+        return null
+      default:
+        return <p key={i}>{key.toUpperCase().replace(/_/g, ' ')}: {product[key]}</p>
+    }
+  }
+
+return(
+  <div>
+    {Object.keys(product).map((key, i)=> (
+      switchRender(key, i)
+    ))}
+    <button type="button" onClick={() => product && cart && addToCart(product, cart, setCart, setIsCartOpen)}>add to cart</button>
+  </div>
+)
+
 }
 
 export default Product

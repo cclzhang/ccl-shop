@@ -1,6 +1,3 @@
-// Find index of item
-export const index = (array, nameOfItem) => array.findIndex(item => item.nameOfItem == nameOfItem)
-
 // Change number to CAD
 export const numToCurrency = price => {
   let dollarCAD = Intl.NumberFormat("en-CA", {
@@ -13,51 +10,50 @@ export const numToCurrency = price => {
 
 
 /* CART RELATED FUNCTIONS */
-export const remove = product_name => prev => {
-  console.log(product_name)
-  prev.filter(item => item.product_name !== product_name)
-}
 
-export const increment = (cart, product_name, stock, num = 1) => {
-  const i = index(cart, product_name)
-  console.log(stock, i)
+export const increment = (cart, id, stock, num = 1) => {
+  const i = cart.findIndex(item=>item.id === id)
   const newCart = [...cart]
 
   if (i !== -1 && cart[i].quantity < stock) {
     newCart[i].quantity = cart[i].quantity + num;
+  } else {
+    alert("out of stock")
   }
 
   return newCart
 }
 
-export const decrement = (cart, product_name, num = 1) => {
-  const i = index(cart, product_name)
-  console.log(i)
+export const decrement = (cart, id, num = 1) => {
+  const i = cart.findIndex(item=>item.id === id)
 
   if (cart[i].quantity === 1) {
-    return remove(product_name)
+    return cart.filter(item => item.id !== id)
   }
 
   const newCart = [...cart];
   newCart[i].quantity = cart[i].quantity - num;
+
   return newCart
 }
 
-export const addToCart = (cart, setCart, setIsCartOpen, product_name, price, stock, image = null) => {
-  const i = index(cart, product_name)
-  // const i = cart.findIndex((item)=>{item.product_name==product_name})
-  console.log(stock, i)
+export const addToCart = (product, product_name, cart, setCart, setIsCartOpen) => {
+  const i = cart.findIndex(item=>item.id === product.id)
 
   if (i === -1 ) {
-    setCart([...cart, {
+    setCart([{
+      id: product.id,
       product_name: product_name,
-      image: image,
-      price: price,
-      stock: stock,
+      image: product.image,
+      stock: product.stock,
+      price: product.price,
       quantity: 1
-    }])
-  } else if (cart[i].quantity < stock) {
-    setCart(increment(cart, product_name, stock))
+    }, ...cart])
+  } else if (cart[i].quantity < product.stock) {
+    setCart(increment(cart, product.id, product.stock))
+  } else {
+    alert("out of stock")
+    return
   }
 
   setIsCartOpen(true)

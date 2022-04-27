@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react'
+import React, { useContext } from 'react'
 import axios from 'axios'
 import { Dialog, DialogTitle, DialogActions } from '@mui/material'
 import { ProductsContext } from '../../App'
@@ -35,7 +35,7 @@ const DeleteWarn = ({open, setOpen, type, id}) => {
       </DialogTitle>
       <DialogActions>
         <button onClick={handleClose} autoFocus>No</button>
-        <button onClick={handleDelete}>Yes</button>
+        <button onClick={handleDelete}>DELETE</button>
       </DialogActions>
     </Dialog>
   )

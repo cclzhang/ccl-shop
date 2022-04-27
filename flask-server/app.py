@@ -287,11 +287,26 @@ def learn_products():
             print(e)
             con.rollback()
             print("error in insert operation")
+
         finally:
             con.close()
             print("The SQLite connection is closed")
 
     return 'get request'
+
+
+@app.route("/owner", methods=['GET', 'POST'])
+def owner_login():
+    if request.method == 'POST':
+        data = request.get_json()
+        if data['username'] == 'a':
+            if data['password'] == "a":
+                return jsonify(0)
+            else:
+                return jsonify(2)
+        else:
+            return jsonify(1)
+    return "login get response"
 
 
 if __name__ == "__main__":

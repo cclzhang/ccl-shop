@@ -1,29 +1,38 @@
-import React, { useEffect } from 'react'
+import React, { useContext } from 'react'
+import { Link } from 'react-router-dom'
 import { addToCart } from '../helpers'
+import { CartContext, OpenCartContext } from '../App';
 
-const GarageProduct = ({ product_name, image, stock, description, price, setCart, cart, setIsCartOpen }) => {
-
-  const handleClick = () => {
-    console.log("clicked")
-  }
+const GarageProduct = ({ product }) => {
+  const [cart, setCart] = useContext(CartContext)
+  const [isCartOpen, setIsCartOpen] = useContext(OpenCartContext)
 
   return (
     <li className='garage-product'>
-      <button onClick={handleClick}>
-        {/* <img 
-          src={image}
+      <Link 
+        to={`/garage/${product.product_name.toLowerCase().replace(/\s/g, '-')}`} 
+        state={{
+          id: product.id,
+          product_name: product.product_name, 
+          image: product.image,
+          description: product.description,
+          stock:product.stock, 
+          price: product.price.toFixed(2)
+        }}>
+        <img 
+          src={product.image}
+          alt=""
           onError={({ currentTarget }) => {
             currentTarget.onerror = null; // prevents looping
             currentTarget.src = "https://via.placeholder.com/150";
           }}
-        /> */}
-        <img src="https://via.placeholder.com/150" alt="" />
-        <h3>{product_name}</h3>
-      </button>
-      <p>stock: {stock}</p>
-      <p>{description}</p>
-      <p>${price.toFixed(2)}</p>
-      <button type="button" onClick={() => addToCart(cart, setCart, setIsCartOpen, product_name, price, stock, image)}>add to cart</button>
+        />
+        <h3>{product.product_name}</h3>
+      </Link>
+      <p>stock: {product.stock}</p>
+      <p>{product.description}</p>
+      <p>${product.price.toFixed(2)}</p>
+      <button type="button" onClick={() => addToCart(product, product.product_name, cart, setCart, setIsCartOpen)}>add to cart</button>
     </li>
   )
 }

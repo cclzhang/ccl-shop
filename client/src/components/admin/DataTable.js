@@ -1,5 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react'
-import axios from 'axios'
+import React, { useState, useContext } from 'react'
 import { FormDialog, DeleteWarn } from '../../components'
 import { ProductsContext } from '../../App';
 
@@ -48,7 +47,7 @@ const DataTable = ({ fields, prefix }) => {
         </thead>
         <tbody>
           {
-            products[type[prefix]] && products[type[prefix]].map((product, i)=>(
+            products && products[type[prefix]].map((product, i)=>(
               <tr key={i}>
                 {/* <td>
                   <input type="checkbox" name="" id="" />

@@ -1,19 +1,13 @@
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
-import { increment, decrement, index, remove, calc, numToCurrency } from '../helpers'
+import React from 'react'
+import { increment, decrement, calc, numToCurrency } from '../helpers'
 
 const CartOverlay = ({ setCart, cart }) => {
-
-  useEffect(()=>{
-    console.log(cart)
-
-  }, [])
 
   return (
     <div>
       <h2>Cart Sidebar</h2>
       {
-        cart && cart.map(({ product_name, image, price, quantity }, i) => (
+        cart && cart.map(({ id, product_name, stock, image, price, quantity }, i) => (
           <div key={i} className="cartItem">
             {image 
             ? <div>
@@ -23,20 +17,26 @@ const CartOverlay = ({ setCart, cart }) => {
             : null}
             <div> 
               <p>product name: {product_name}</p>
-              <p>price: {price}</p>
+              <p>price: ${price.toFixed(2)}</p>
             </div>
             <div>
               <div>
-                <button onClick={() => setCart(decrement(cart, product_name))}>-</button>
+                <button onClick={() => 
+                  setCart(decrement(cart, id))
+                }>-</button>
                 <p>{quantity}</p>
-                <button onClick={()=> setCart(increment(cart, product_name, cart[index(cart, product_name)]))}>+</button>
+                <button onClick={()=> 
+                  setCart(increment(cart, id, stock))
+                }>+</button>
               </div>
-              <button onClick={() => setCart(remove(product_name))}>delete</button>
+              <button onClick={() => 
+                setCart(cart.filter(item => item.id !== id))
+              }>delete</button>
             </div>
           </div>
         ))
       }
-      <p>subtotal: <span>CAD {numToCurrency(calc(cart))}</span></p>
+      <p>subtotal: <span>CAD {cart && numToCurrency(calc(cart))}</span></p>
       <button>checkout</button>
     </div>
   )

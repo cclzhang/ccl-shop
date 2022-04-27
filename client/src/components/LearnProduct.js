@@ -1,19 +1,27 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { Link } from 'react-router-dom'
 import { addToCart } from '../helpers'
+import { CartContext, OpenCartContext } from '../App';
 
-const LearnProduct = ({ name, duration, price, setCart, cart, setIsCartOpen }) => {
-  const handleClick = () => {
-    console.log("clicked")
-  }
-
+const LearnProduct = ({ product }) => {
+  const [cart, setCart] = useContext(CartContext)
+  const [isCartOpen, setIsCartOpen] = useContext(OpenCartContext)
+  console.log(product)
   return (
     <div className='Learn-product'>
-      <button onClick={handleClick}>
-        <h3>{name}</h3>
-      </button>
-      <p>time: {duration}mins</p>
-      <p>price: {price}</p>
-      <button type="button" onClick={() => addToCart(cart, setCart, setIsCartOpen, name, price, 1)}>add to cart</button>
+      <Link 
+        to={`/learn/${product.lesson_name.toLowerCase().replace(/\s/g, '-')}`} 
+        state={{
+          id: product.id,
+          lesson_name: product.lesson_name, 
+          duration: product.duration_minutes,
+          price: product.price.toFixed(2)
+        }}>  
+        <h3>{product.lesson_name}</h3>
+      </Link>
+      <p>time: {product.duration_minutes} mins</p>
+      <p>price: ${product.price.toFixed(2)}</p>
+      <button type="button" onClick={() => addToCart(product, product.lesson_name, cart, setCart, setIsCartOpen)}>add to cart</button>
     </div>
   )
 }

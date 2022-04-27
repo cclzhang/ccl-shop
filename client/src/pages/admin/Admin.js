@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
-import { Link, Routes, Route } from 'react-router-dom'
+import React from 'react'
+import { Routes, Route } from 'react-router-dom'
 import { PageNotFound, AdminHome, Inventory } from '../../pages'
 
-const Admin = ({products, setProducts, isAdmin, setIsAdmin}) => {
+const Admin = ({ products, setProducts, isAdmin, setIsAdmin }) => {
 
   return (
     <main>

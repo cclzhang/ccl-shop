@@ -8,8 +8,8 @@ const AdminHome = ({isAdmin, setIsAdmin}) => {
       {
         isAdmin ? <>
           <Link to="inventory">Manage Inventory</Link>
-          <Link to="/home">Log out</Link>     
-        </> : <Login />
+          <Link to="/home" onClick={()=> setIsAdmin(false)}>Log out</Link>     
+        </> : <Login setIsAdmin={setIsAdmin}/>
       }
     </div>
   )

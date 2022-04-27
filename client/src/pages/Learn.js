@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Pagination } from '@mui/material'
 import { LearnProduct } from '../components'
 
-const Learn = ({cart, setCart, products, setIsCartOpen}) => {
+const Learn = ({ products }) => {
   const [currentPage, setCurrentPage] = useState(1)
 
   const length = products?.length
   const [productsPerPage, setProductsPerPage] = useState(2)
   const endIndex = currentPage * productsPerPage
   const startIndex = endIndex - productsPerPage
+  console.log(products)
 
   return (
     <main>
@@ -16,15 +17,10 @@ const Learn = ({cart, setCart, products, setIsCartOpen}) => {
       <p>{ products ? `${products.length} items` : "0 items" }</p>
       <ul className='garage'>
         {
-          products && products.slice(startIndex, endIndex).map(({ id, lesson_name, duration_minutes, price }) => (
+          products && products.slice(startIndex, endIndex).map((product, i) => (
             <LearnProduct
-              key={id}
-              name={lesson_name}
-              duration={duration_minutes}
-              price={price}
-              setCart={setCart}
-              cart={cart}
-              setIsCartOpen={setIsCartOpen}
+              key={i}
+              product={product}
             />
           ))
         }

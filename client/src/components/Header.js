@@ -15,11 +15,11 @@ const Header = ({ isCartOpen, setIsCartOpen, isAdmin, setIsAdmin }) => {
           <button onClick={()=> setIsAdmin(!isAdmin)}>
             toggle admin
           </button>
-          <button onClick={()=> navigate('/owner')}>
-          {/* <Link to="/account"> */}
+          {/* <button onClick={()=> navigate('/owner')}> */}
+          <Link to="/account">
             <img src={userIcon} alt="account" />
-          {/* </Link> */}
-          </button>
+          </Link>
+          {/* </button> */}
         </li>
         <li>
           <button onClick={() => setIsCartOpen(!isCartOpen)}>
