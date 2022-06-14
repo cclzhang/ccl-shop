@@ -13,7 +13,7 @@ const WritingsProduct = ({ product }) => {
         to={`/writings/${product.title.toLowerCase().replace(/\s/g, '-')}`} 
         state={{
           id: product.id,
-          title: product.title, 
+          product_name: product.title, 
           summary: product.summary,
           stock: product.stock, 
           price: product.price.toFixed(2)

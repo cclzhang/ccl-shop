@@ -1,13 +1,28 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 
-const Nav = () => {
+const Nav = ({setIsNavOpen}) => {
   return (
     <nav>
-      <ul>
-        <li><NavLink to="/garage">garage</NavLink></li>
-        <li><NavLink to="/writings">writings</NavLink></li>
-        <li><NavLink to="/learn">learn</NavLink></li>
+      <ul className='wrapper'>
+        <li>
+          <NavLink 
+            to="/garage" 
+            onClick={()=>setIsNavOpen(false)}
+          >garage</NavLink>
+        </li>
+        <li>
+          <NavLink 
+            to="/writings" 
+            onClick={()=>setIsNavOpen(false)}
+          >writings</NavLink>
+        </li>
+        <li>
+          <NavLink 
+            to="/learn" 
+            onClick={()=>setIsNavOpen(false)}
+          >learn</NavLink>
+        </li>
       </ul>
     </nav>
   )

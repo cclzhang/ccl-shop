@@ -29,49 +29,51 @@ const DataTable = ({ fields, prefix }) => {
   return (
     <section>
       <button onClick={handleOpenForm}>+ add new item</button>
-      <table>
-        <thead>
-          <tr>
-            {/* <th>
-              <input type="checkbox" name="" id="" />
-              <label htmlFor="">select</label>
-            </th> */}
-            <th>id</th>
+      <div className='test'>
+        <table>
+          <thead>
+            <tr>
+              {/* <th>
+                <input type="checkbox" name="" id="" />
+                <label htmlFor="">select</label>
+              </th> */}
+              <th>id</th>
+              {
+                fields.map((field, i)=>(
+                  <th key={i}>{field.key}</th>
+                ))
+              }
+              <th>actions</th>
+            </tr>
+          </thead>
+          <tbody>
             {
-              fields.map((field, i)=>(
-                <th key={i}>{field.key}</th>
+              products && products[type[prefix]].map((product, i)=>(
+                <tr key={i}>
+                  {/* <td>
+                    <input type="checkbox" name="" id="" />
+                    <label htmlFor="">select</label>
+                  </td> */}
+                  <th>
+                    {prefix}{products[type[prefix]].length - i}
+                  </th>
+                  {
+                    fields.map((field, i)=>(
+                      field.key === 'price' 
+                        ?<td key={i}>${parseFloat(product[field.key]).toFixed(2)}</td>
+                        : <td key={i}>{product[field.key]}</td>
+                    ))
+                  }
+                  <td>
+                    <button onClick={handleEdit(product.id)}>edit</button>
+                    <button onClick={handleOpenWarning(product.id)}>delete</button>
+                  </td>
+                </tr>
               ))
             }
-            <th>actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {
-            products && products[type[prefix]].map((product, i)=>(
-              <tr key={i}>
-                {/* <td>
-                  <input type="checkbox" name="" id="" />
-                  <label htmlFor="">select</label>
-                </td> */}
-                <th>
-                  {prefix}{products[type[prefix]].length - i}
-                </th>
-                {
-                  fields.map((field, i)=>(
-                    field.key === 'price' 
-                      ?<td key={i}>${parseFloat(product[field.key]).toFixed(2)}</td>
-                      : <td key={i}>{product[field.key]}</td>
-                  ))
-                }
-                <td>
-                  <button onClick={handleEdit(product.id)}>edit</button>
-                  <button onClick={handleOpenWarning(product.id)}>delete</button>
-                </td>
-              </tr>
-            ))
-          }
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      </div>
       <FormDialog 
         open={openForm} 
         setOpen={setOpenForm} 

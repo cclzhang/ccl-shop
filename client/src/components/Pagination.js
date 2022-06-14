@@ -16,6 +16,7 @@ const Pagination = ({length, rowsPerPage, setRowsPerPage}) => {
 
   return (
     <TablePagination
+      sx={{zIndex: 'mobileStepper'}}
       component="div"
       count={length}
       page={page}

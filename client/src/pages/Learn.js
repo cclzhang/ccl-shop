@@ -9,7 +9,6 @@ const Learn = ({ products }) => {
   const [productsPerPage, setProductsPerPage] = useState(2)
   const endIndex = currentPage * productsPerPage
   const startIndex = endIndex - productsPerPage
-  console.log(products)
 
   return (
     <main>

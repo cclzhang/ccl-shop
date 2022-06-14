@@ -1,0 +1,26 @@
+@use '../utils/variables' as *;
+
+header {
+
+}
+
+main {
+  flex-grow: 2;
+  margin-top: $header-height;
+}
+
+footer {
+  border: 1px solid white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  ul {
+    display: flex;
+    li {
+      width: 45px;
+      padding: 2%;
+      display: flex;
+      align-items: center;
+    }
+  }
+}

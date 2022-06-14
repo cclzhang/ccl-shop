@@ -9,6 +9,7 @@ import Header from "./components/Header"
 import LearnProduct from "./components/LearnProduct"
 import Login from "./components/Login"
 import Nav from "./components/Nav"
+import NavBurger from "./components/NavBurger"
 import PriceTextField from "./components/admin/PriceTextField"
 import Sort from "./components/Sort"
 import Tags from "./components/Tags"
@@ -26,6 +27,7 @@ export {
   LearnProduct, 
   Login,
   Nav, 
+  NavBurger,
   PriceTextField,
   Sort, 
   Tags, 

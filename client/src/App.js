@@ -12,22 +12,31 @@ import { Home, Admin, Account, Garage, Writings, Learn, Cart, Product, PageNotFo
 import { Header, Footer, CartOverlay } from './components';
 
 // CSS
-import './App.css';
+import './App.scss';
 
 export const ProductsContext = createContext();
 export const CartContext = createContext();
 export const OpenCartContext = createContext();
 
 function App() {
+  // 
+  const [width, setWidth] = React.useState(window.innerWidth);
+  const breakpoint = 620;
+
   const [isAdmin, setIsAdmin] = useState(false)
   const [cart, setCart] = useState(undefined)
   const [products, setProducts] = useState({})
   const [isCartOpen, setIsCartOpen] = useState(false)
+
+  const [isNavOpen, setIsNavOpen] = useState(false)
+
   
   const cookies = useMemo(()=>new Cookies(), [])
 
   // On page load set cart to whatever's in the cookie
   useEffect(()=> {
+    window.addEventListener("resize", () => setWidth(window.innerWidth));
+
     if(cookies.get("cart")) {  
       setCart(cookies.get("cart"))
     } else {
@@ -60,15 +69,17 @@ function App() {
 
   return (
     <Router>
-      <div className="App">
+      <div className={`App${isNavOpen ? " noScroll" : ""}`}>
         <ProductsContext.Provider value={[products, setProducts]}>
         <CartContext.Provider value={[cart, setCart]}>
         <OpenCartContext.Provider value={[isCartOpen, setIsCartOpen]}>
           <Header 
             isCartOpen={isCartOpen} 
             setIsCartOpen={setIsCartOpen}
-            isAdmin={isAdmin}
-            setIsAdmin={setIsAdmin}
+            isNavOpen={isNavOpen}
+            setIsNavOpen={setIsNavOpen}
+            width={width}
+            breakpoint={breakpoint}
           />
 
           {/* CART DRAWER */}

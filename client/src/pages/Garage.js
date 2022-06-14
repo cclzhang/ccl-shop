@@ -11,7 +11,7 @@ const Garage = ({ products }) => {
   const startIndex = endIndex - productsPerPage
   
   return (
-    <main>
+    <main className='wrapper'>
       <h3>Shop All In My Home</h3>
       <p>{ products ? `${products.length} items` : "0 items" }</p>
       <ul className='garage'>

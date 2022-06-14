@@ -1,8 +1,9 @@
 import React from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import { PageNotFound, AdminHome, Inventory } from '../../pages'
 
 const Admin = ({ products, setProducts, isAdmin, setIsAdmin }) => {
+  // const navigate = useNavigate();
 
   return (
     <main>
@@ -14,10 +15,14 @@ const Admin = ({ products, setProducts, isAdmin, setIsAdmin }) => {
           setIsAdmin={setIsAdmin}
         />}/>
         {
-          isAdmin ? <Route path="inventory" element={<Inventory 
-            products={products} 
-            setProducts={setProducts}
-          />}/> : null
+          isAdmin 
+            ? <>
+              <Route path="inventory" element={<Inventory 
+                products={products} 
+                setProducts={setProducts}
+              />}/> 
+            </>
+            : <Route path="inventory" element={<Navigate to="/owner" replace />}/> 
         }
         <Route path="/*" element={<PageNotFound/>} />
       </Routes>

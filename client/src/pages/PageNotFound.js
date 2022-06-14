@@ -2,7 +2,7 @@ import React from 'react'
 
 const PageNotFound = () => {
   return (
-    <div>404 error PageNotFound</div>
+    <main>404 error PageNotFound</main>
   )
 }
 

@@ -11,13 +11,14 @@ const Inventory = ({products, setProducts}) => {
   };
 
   return (
+    <>
     <TabContext value={value}>
       <TabList onChange={handleChange} aria-label="lab API tabs example">
         <Tab label="Garage" value="1" />
         <Tab label="Writings" value="2" />
         <Tab label="Learn" value="3" />
       </TabList>
-      <TabPanel value="1">
+      <TabPanel value="1" sx={{ p: 0 }}>
         <DataTable
           products={products.garage}
           setProducts={setProducts}
@@ -46,7 +47,7 @@ const Inventory = ({products, setProducts}) => {
           ]}
         />
       </TabPanel>
-      <TabPanel value="2">
+      <TabPanel value="2" sx={{ p: 0 }}>
         <DataTable
           products={products.writings}
           setProducts={setProducts}
@@ -71,7 +72,7 @@ const Inventory = ({products, setProducts}) => {
           ]}
         />
       </TabPanel>
-      <TabPanel value="3">
+      <TabPanel value="3" sx={{ p: 0 }}>
         <DataTable
           products={products.learn}
           setProducts={setProducts}
@@ -93,6 +94,7 @@ const Inventory = ({products, setProducts}) => {
         />
       </TabPanel>
     </TabContext>
+    </>
   )
 }
 

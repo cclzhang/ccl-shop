@@ -6,14 +6,14 @@ import { CartContext, OpenCartContext } from '../App';
 const LearnProduct = ({ product }) => {
   const [cart, setCart] = useContext(CartContext)
   const [isCartOpen, setIsCartOpen] = useContext(OpenCartContext)
-  console.log(product)
+
   return (
     <div className='Learn-product'>
       <Link 
         to={`/learn/${product.lesson_name.toLowerCase().replace(/\s/g, '-')}`} 
         state={{
           id: product.id,
-          lesson_name: product.lesson_name, 
+          product_name: product.lesson_name, 
           duration: product.duration_minutes,
           price: product.price.toFixed(2)
         }}>  

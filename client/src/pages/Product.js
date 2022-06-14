@@ -12,8 +12,6 @@ const Product = () => {
   const [cart, setCart] = useContext(CartContext)
   const [isCartOpen, setIsCartOpen] = useContext(OpenCartContext)
 
-  console.log(product)
-
   const switchRender = (key, i) => {
     switch(key) {
       case 'image':
@@ -41,7 +39,7 @@ return(
     {Object.keys(product).map((key, i)=> (
       switchRender(key, i)
     ))}
-    <button type="button" onClick={() => product && cart && addToCart(product, cart, setCart, setIsCartOpen)}>add to cart</button>
+    <button type="button" onClick={() => product && cart && addToCart(product, product.product_name, cart, setCart, setIsCartOpen)}>add to cart</button>
   </div>
 )
 
