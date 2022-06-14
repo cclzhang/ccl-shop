@@ -8,18 +8,20 @@ import Inventory from "./pages/admin/Inventory"
 import Learn from "./pages/Learn"
 import PageNotFound from "./pages/PageNotFound"
 import Product from "./pages/Product"
+import ResetPassword from "./pages/admin/ResetPassword"
 import Writings from "./pages/Writings"
 
 export {
   Account,
   Admin,
   AdminHome,
-  Cart, 
+  Cart,
   Garage,
   Home,
   Inventory,
-  Learn, 
-  PageNotFound, 
-  Product, 
+  Learn,
+  PageNotFound,
+  Product,
+  ResetPassword,
   Writings
 }

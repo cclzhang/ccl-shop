@@ -2,8 +2,9 @@ import React, { useState } from 'react'
 import { TextField, InputAdornment, IconButton } from '@mui/material'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import axios from 'axios'
+import { Link } from 'react-router-dom'
 
-const Login = ({setIsAdmin}) => {
+const Login = ({ setIsAdmin }) => {
 
   const [showPassword, setShowPassword] = useState(false)
   const [password, setPassword] = useState("")
@@ -18,7 +19,7 @@ const Login = ({setIsAdmin}) => {
         password: password
       })
       .then(res => {
-        
+
         console.log(res.data)
         if (res.data === 0) {
           setIsAdmin(true)
@@ -46,8 +47,8 @@ const Login = ({setIsAdmin}) => {
           label="Username"
           value={username}
           placeholder="Username"
-          onChange={(e)=> setUsername(e.target.value)}
-        /> 
+          onChange={(e) => setUsername(e.target.value)}
+        />
         <TextField
           required
           error={valid === 2}
@@ -57,7 +58,7 @@ const Login = ({setIsAdmin}) => {
           type={showPassword ? 'text' : 'password'}
           placeholder="Password"
           value={password}
-          onChange={(e)=> setPassword(e.target.value)}
+          onChange={(e) => setPassword(e.target.value)}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -67,7 +68,7 @@ const Login = ({setIsAdmin}) => {
                   onMouseDown={handleMouseDownPassword}
                   edge="end"
                 >
-                  {showPassword ? <Visibility /> : <VisibilityOff />} 
+                  {showPassword ? <Visibility /> : <VisibilityOff />}
                 </IconButton>
               </InputAdornment>
             )
@@ -75,7 +76,7 @@ const Login = ({setIsAdmin}) => {
         />
         <button type="submit">Login</button>
       </form>
-      <a href="/">Forgot password?</a>
+      <Link to="/reset-password">Forgot password?</Link>
     </div>
   )
 }

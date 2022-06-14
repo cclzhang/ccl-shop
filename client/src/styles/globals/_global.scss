@@ -1,4 +1,4 @@
-@use '../utils/variables' as *;
+@use '../utils/variables'as *;
 
 * {
   padding: 0;
@@ -13,11 +13,12 @@ body {
   background-color: $primary-color;
   color: $tertiary-color;
   font-size: 1.6rem;
+
   &::-webkit-scrollbar {
     width: 7px;
     background: rgba(0, 0, 0, 0.7);
   }
-  
+
   &::-webkit-scrollbar-thumb {
     background: rgba(119, 119, 119, 0.5);
   }
@@ -43,28 +44,38 @@ a {
 button {
   cursor: pointer;
   background-color: $secondary-color;
-  border: none;
+  border: 1px solid transparent;
   outline: none;
   border-radius: 5px;
   color: $primary-color;
   padding: 10px;
+
+  &:focus:not(.MuiIconButton-root) {
+    border: 1px solid black;
+  }
+
+  &:hover {
+    background-color: $tertiary-color;
+  }
 }
 
-header, footer {
+header,
+footer {
   img {
     width: 20px;
   }
 }
 
 .test {
-  overflow:auto;
+  overflow: auto;
   width: 70vw;
   min-width: 265px;
+
   &::-webkit-scrollbar {
     height: 7px;
     background: rgba(0, 0, 0, 0.7);
   }
-  
+
   &::-webkit-scrollbar-thumb {
     background: rgba(119, 119, 119, 0.5);
   }
@@ -74,6 +85,7 @@ table {
   // overflow-x: auto;
   background: black;
 }
+
 .App {
   display: flex;
   align-items: center;
@@ -108,4 +120,3 @@ table {
   height: 100vh;
   overflow: hidden;
 }
-
